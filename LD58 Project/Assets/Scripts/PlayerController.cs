@@ -3,17 +3,23 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Player Movement")]
-    [SerializeField] private float walkSpeed;
-    [SerializeField] private float runSpeed;
-    private KeyCode runKey = KeyCode.LeftShift;
+    [SerializeField] private float minSpeed;
+    [SerializeField] public float maxSpeed;
+    [SerializeField] public float currentSpeed;
+    [SerializeField] private float acceleration; 
+    [SerializeField] private float boostDecay;
     public Transform cam;
 
     [Header("Jump")]
-    [SerializeField] private float jumpForce;
+    [SerializeField] public float jumpForce;
     [SerializeField] private float jumpCooldown;
     [SerializeField] private float airMultiplier;
-    [SerializeField] private float gravity;
+    [SerializeField] public float gravity;
+    [SerializeField] private float doubleJumpDelay = 0.2f;
     private bool readyToJump;
+    private bool hasDoubleJump;
+    private bool hasJumpedFromGround;
+    private float timeSinceFirstJump;
     private KeyCode jumpKey = KeyCode.Space;
 
     [Header("Crouching")]
@@ -23,7 +29,6 @@ public class PlayerController : MonoBehaviour
     private bool crouching;
     private KeyCode crouchKey = KeyCode.LeftControl;
 
-    [Header("Ground Check")]
     [SerializeField] private LayerMask whatIsGround;
     [SerializeField] private float groundCheckDistance = 1.08f;
     public Transform player;
@@ -32,26 +37,37 @@ public class PlayerController : MonoBehaviour
     [Header("Other")]
     private CharacterController controller;
     private Vector3 moveDirection;
-    private bool wantsToRun;
-    private float currentSpeed;
-    private float verticalVelocity;
-    private Vector3 horizontalVelocity;
-    private bool sliding = false;
+    public float verticalVelocity;
+    public Vector3 horizontalVelocity;
+    private bool sliding;
+    public bool wallRunning;
+    private Sliding slidingScript;
 
     private void Start()
     {
         controller = GetComponent<CharacterController>();
+        slidingScript = GetComponent<Sliding>();
         readyToJump = true;
+        hasDoubleJump = false;
+        hasJumpedFromGround = false;
         startYScale = transform.localScale.y;
     }
 
     private void Update()
     {
         GroundCheck();
+        
+        if (!grounded && hasJumpedFromGround)
+        {
+            timeSinceFirstJump += Time.deltaTime;
+        }
+        
         HandleInput();
         
-        if (!sliding)
+        if (!sliding && !wallRunning)
+        {
             MovePlayer();
+        }
     }
 
     private void GroundCheck()
@@ -61,11 +77,35 @@ public class PlayerController : MonoBehaviour
 
     private void HandleInput()
     {
-        if (Input.GetKeyDown(jumpKey) && grounded && readyToJump)
+        if (Input.GetKeyDown(jumpKey))
         {
-            readyToJump = false;
-            Jump();
-            Invoke(nameof(ResetJump), jumpCooldown);
+            if (readyToJump && (grounded || (sliding && slidingScript.IsGroundedForJump())))
+            {
+                readyToJump = false;
+                hasJumpedFromGround = true;
+                timeSinceFirstJump = 0f;
+                hasDoubleJump = true;
+                
+                if (sliding)
+                {
+                    slidingScript.JumpWhileSliding(jumpForce);
+                }
+                else
+                {
+                    Jump();
+                }
+                Invoke(nameof(ResetJump), jumpCooldown);
+            }
+            else if (!grounded && hasDoubleJump && timeSinceFirstJump >= doubleJumpDelay)
+            {
+                hasDoubleJump = false;
+                Jump();
+            }
+            else if (!grounded && !hasJumpedFromGround && !hasDoubleJump && readyToJump)
+            {
+                readyToJump = false;
+                Jump();
+            }
         }
 
         if (Input.GetKeyDown(crouchKey) && !sliding)
@@ -76,74 +116,82 @@ public class PlayerController : MonoBehaviour
 
     private void MovePlayer()
     {
-        float horizontalInput = Input.GetAxisRaw("Horizontal");
-        float verticalInput = Input.GetAxisRaw("Vertical");
-        wantsToRun = Input.GetKey(runKey);
-
-        moveDirection = transform.forward * verticalInput + transform.right * horizontalInput;
-
-        if (crouching)
-        {
-            currentSpeed = crouchSpeed;
-        }
-        else
-        {
-            currentSpeed = wantsToRun ? runSpeed : walkSpeed;
-        }
+        moveDirection = transform.forward * Input.GetAxisRaw("Vertical") + transform.right * Input.GetAxisRaw("Horizontal");
+        float targetSpeed = crouching ? crouchSpeed : maxSpeed;
+        bool moving = moveDirection.magnitude > 0.1f;
 
         if (grounded)
         {
-            horizontalVelocity = moveDirection.normalized * currentSpeed;
-        }
-        else
-        {
-            if (moveDirection.magnitude > 0.1f)
+            if (currentSpeed > targetSpeed)
             {
-                Vector3 airControl = moveDirection.normalized * currentSpeed * airMultiplier;
-                horizontalVelocity = Vector3.Lerp(horizontalVelocity, airControl, airMultiplier * Time.deltaTime * 10f);
+                currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, boostDecay * Time.deltaTime);
+            }
+            currentSpeed = moving ? (currentSpeed < minSpeed ? minSpeed : Mathf.MoveTowards(currentSpeed, targetSpeed, acceleration * Time.deltaTime)) : 0f;
+            horizontalVelocity = moving ? moveDirection.normalized * currentSpeed : Vector3.zero;
+        }
+        else if (moving)
+        {
+            horizontalVelocity = Vector3.Lerp(horizontalVelocity, moveDirection.normalized * currentSpeed * airMultiplier, airMultiplier * Time.deltaTime * 2f);
+        }
+        else if (!grounded)
+        {
+            float horizontal = Input.GetAxisRaw("Horizontal");
+            if (Mathf.Abs(horizontal) > 0.1f)
+            {
+                Vector3 strafeDir = transform.right * horizontal * currentSpeed * airMultiplier * 0.5f;
+                horizontalVelocity += strafeDir * Time.deltaTime * 10f;
             }
         }
 
         if (grounded && verticalVelocity < 0)
         {
             verticalVelocity = -2f;
+            if (!readyToJump)
+            {
+                hasJumpedFromGround = false;
+                timeSinceFirstJump = 0f;
+                hasDoubleJump = false;
+            }
         }
         else
         {
             verticalVelocity += gravity * Time.deltaTime;
         }
-
-        Vector3 finalMove = horizontalVelocity * Time.deltaTime + new Vector3(0, verticalVelocity * Time.deltaTime, 0);
         
-        controller.Move(finalMove);
+        controller.Move((horizontalVelocity + Vector3.up * verticalVelocity) * Time.deltaTime);
     }
 
-    private void Jump()
-    {
-        verticalVelocity = jumpForce;
-    }
+    private void Jump() => verticalVelocity = jumpForce;
 
-    private void ResetJump()
-    {
-        readyToJump = true;
-    }
+    private void ResetJump() => readyToJump = true;
 
     private void Crouch()
     {
-        if (crouching)
-        {
-            transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
-            crouching = false;
-        }
-        else
-        {
-            transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
-            crouching = true;
-        }
+        crouching = !crouching;
+        float yScale = crouching ? crouchYScale : startYScale;
+        transform.localScale = new Vector3(transform.localScale.x, yScale, transform.localScale.z);
     }
 
-    public void SetSliding(bool isSliding)
+    public void SetSliding(bool isSliding) => sliding = isSliding;
+    
+    public void SetWallRunning(bool isWallRunning) => wallRunning = isWallRunning;
+    
+    public void DisableDoubleJump() => hasDoubleJump = false;
+    
+    public void EnableDoubleJump()
     {
-        sliding = isSliding;
+        hasDoubleJump = true;
+        hasJumpedFromGround = true;
+        timeSinceFirstJump = doubleJumpDelay;
+    }
+
+    public float GetCurrentSpeed() => currentSpeed;
+    
+    public void ApplySpeedBoost(float speed)
+    {
+        if (speed > currentSpeed)
+        {
+            currentSpeed = speed;
+        }
     }
 }
