@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class Grappling : MonoBehaviour
 {
-    private PlayerController pc;
     [SerializeField] private Transform cam;
     [SerializeField] private Transform gunTip;
     [SerializeField] public LayerMask whatIsGrappleable;
@@ -15,11 +14,6 @@ public class Grappling : MonoBehaviour
 
     public KeyCode grappleKey = KeyCode.Mouse0;
     private bool grappling;
-
-    private void Start()
-    {
-        pc = GetComponent<PlayerController>();
-    }
 
     private void Update()
     {
