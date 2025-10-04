@@ -131,13 +131,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 524b2631b497b17468a16d9a8201c0de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 10
-  runSpeed: 20
+  minSpeed: 10
+  maxSpeed: 20
+  currentSpeed: 0
+  acceleration: 8
+  boostDecay: 3
   cam: {fileID: 3033721616009639922}
   jumpForce: 12
   jumpCooldown: 0.25
   airMultiplier: 0.5
   gravity: -20
+  doubleJumpDelay: 0.2
   crouchSpeed: 3
   crouchYScale: 0.5
   startYScale: 0
@@ -147,6 +151,9 @@ MonoBehaviour:
   groundCheckDistance: 1.08
   player: {fileID: 4149510714520422539}
   grounded: 0
+  verticalVelocity: 0
+  horizontalVelocity: {x: 0, y: 0, z: 0}
+  wallRunning: 0
 --- !u!143 &6053826220102107120
 CharacterController:
   m_ObjectHideFlags: 0
@@ -210,9 +217,13 @@ MonoBehaviour:
   maxSlideSpeed: 25
   slideAcceleration: 40
   slideYScale: 0.5
-  slideKey: 99
+  slopeGravityForce: -5
   groundCheckDistance: 1.08
   maxSlopeAngle: 45
+  slopeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  slideKey: 99
 --- !u!82 &8654257836007028316
 AudioSource:
   m_ObjectHideFlags: 0
@@ -786,7 +797,7 @@ Camera:
   m_GameObject: {fileID: 9031699296744022028}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0.23584908, g: 0.23584908, b: 0.23584908, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
