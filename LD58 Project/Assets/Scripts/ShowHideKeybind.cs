@@ -3,10 +3,12 @@ using UnityEngine;
 public class ShowHideKeybind : MonoBehaviour
 {
     [SerializeField] private GameObject keybind;
+    public bool hideKeybind = true;
 
     public void ShowButton()
     {
-        keybind.SetActive(true);
+        if (hideKeybind) keybind.SetActive(true);
+        else return;
     }
 
     public void HideButton()

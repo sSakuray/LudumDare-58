@@ -5,7 +5,7 @@ public class PlayerController : MonoBehaviour
     [Header("Player Movement")]
     [SerializeField] private float minSpeed;
     [SerializeField] public float maxSpeed;
-    [SerializeField] private float currentSpeed;
+    [SerializeField] public float currentSpeed;
     [SerializeField] private float acceleration; 
     [SerializeField] private float boostDecay;
     public Transform cam;
@@ -15,7 +15,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpCooldown;
     [SerializeField] private float airMultiplier;
     [SerializeField] public float gravity;
+    [SerializeField] private float doubleJumpDelay = 0.2f;
     private bool readyToJump;
+    private bool hasDoubleJump;
+    private bool hasJumpedFromGround;
+    private float timeSinceFirstJump;
     private KeyCode jumpKey = KeyCode.Space;
 
     [Header("Crouching")]
@@ -44,12 +48,20 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         slidingScript = GetComponent<Sliding>();
         readyToJump = true;
+        hasDoubleJump = false;
+        hasJumpedFromGround = false;
         startYScale = transform.localScale.y;
     }
 
     private void Update()
     {
         GroundCheck();
+        
+        if (!grounded && hasJumpedFromGround)
+        {
+            timeSinceFirstJump += Time.deltaTime;
+        }
+        
         HandleInput();
         
         if (!sliding && !wallRunning)
@@ -65,12 +77,15 @@ public class PlayerController : MonoBehaviour
 
     private void HandleInput()
     {
-        if (Input.GetKeyDown(jumpKey) && readyToJump)
+        if (Input.GetKeyDown(jumpKey))
         {
-            bool canJump = grounded || (sliding && slidingScript.IsGroundedForJump());
-            if (canJump)
+            if (readyToJump && (grounded || (sliding && slidingScript.IsGroundedForJump())))
             {
                 readyToJump = false;
+                hasJumpedFromGround = true;
+                timeSinceFirstJump = 0f;
+                hasDoubleJump = true;
+                
                 if (sliding)
                 {
                     slidingScript.JumpWhileSliding(jumpForce);
@@ -80,6 +95,16 @@ public class PlayerController : MonoBehaviour
                     Jump();
                 }
                 Invoke(nameof(ResetJump), jumpCooldown);
+            }
+            else if (!grounded && hasDoubleJump && timeSinceFirstJump >= doubleJumpDelay)
+            {
+                hasDoubleJump = false;
+                Jump();
+            }
+            else if (!grounded && !hasJumpedFromGround && !hasDoubleJump && readyToJump)
+            {
+                readyToJump = false;
+                Jump();
             }
         }
 
@@ -98,8 +123,9 @@ public class PlayerController : MonoBehaviour
         if (grounded)
         {
             if (currentSpeed > targetSpeed)
+            {
                 currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, boostDecay * Time.deltaTime);
-            
+            }
             currentSpeed = moving ? (currentSpeed < minSpeed ? minSpeed : Mathf.MoveTowards(currentSpeed, targetSpeed, acceleration * Time.deltaTime)) : 0f;
             horizontalVelocity = moving ? moveDirection.normalized * currentSpeed : Vector3.zero;
         }
@@ -107,8 +133,31 @@ public class PlayerController : MonoBehaviour
         {
             horizontalVelocity = Vector3.Lerp(horizontalVelocity, moveDirection.normalized * currentSpeed * airMultiplier, airMultiplier * Time.deltaTime * 2f);
         }
+        else if (!grounded)
+        {
+            float horizontal = Input.GetAxisRaw("Horizontal");
+            if (Mathf.Abs(horizontal) > 0.1f)
+            {
+                Vector3 strafeDir = transform.right * horizontal * currentSpeed * airMultiplier * 0.5f;
+                horizontalVelocity += strafeDir * Time.deltaTime * 10f;
+            }
+        }
 
-        verticalVelocity = grounded && verticalVelocity < 0 ? -2f : verticalVelocity + gravity * Time.deltaTime;
+        if (grounded && verticalVelocity < 0)
+        {
+            verticalVelocity = -2f;
+            if (!readyToJump)
+            {
+                hasJumpedFromGround = false;
+                timeSinceFirstJump = 0f;
+                hasDoubleJump = false;
+            }
+        }
+        else
+        {
+            verticalVelocity += gravity * Time.deltaTime;
+        }
+        
         controller.Move((horizontalVelocity + Vector3.up * verticalVelocity) * Time.deltaTime);
     }
 
@@ -126,6 +175,15 @@ public class PlayerController : MonoBehaviour
     public void SetSliding(bool isSliding) => sliding = isSliding;
     
     public void SetWallRunning(bool isWallRunning) => wallRunning = isWallRunning;
+    
+    public void DisableDoubleJump() => hasDoubleJump = false;
+    
+    public void EnableDoubleJump()
+    {
+        hasDoubleJump = true;
+        hasJumpedFromGround = true;
+        timeSinceFirstJump = doubleJumpDelay;
+    }
 
     public float GetCurrentSpeed() => currentSpeed;
     

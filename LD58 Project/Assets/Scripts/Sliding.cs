@@ -30,7 +30,7 @@ public class Sliding : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(slideKey) && !isSliding && CanSlide())
+        if (!isSliding && Input.GetKey(slideKey) && CanSlide())
         {
             StartSlide();
         }

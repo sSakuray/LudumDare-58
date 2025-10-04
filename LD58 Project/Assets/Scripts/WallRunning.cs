@@ -15,6 +15,7 @@ public class WallRunning : MonoBehaviour
     private bool onWall;
     private Vector3 wallNormal;
     private float wallRunTimer;
+    private GameObject lastWall;
 
     private void Start()
     {
@@ -54,14 +55,24 @@ public class WallRunning : MonoBehaviour
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if (hit.gameObject.CompareTag("Wall") && !pc.grounded)
-        {
-            onWall = true;
-            wallNormal = hit.normal;
-        }
-        else if (pc.grounded)
+        if (pc.grounded)
         {
             onWall = false;
+            lastWall = null;
+            pc.SetWallRunning(false);
+            return;
+        }
+        
+        if (hit.gameObject.CompareTag("Wall"))
+        {
+            if (lastWall != hit.gameObject)
+            {
+                lastWall = hit.gameObject;
+                wallRunTimer = maxWallRunTime;
+            }
+            
+            onWall = true;
+            wallNormal = hit.normal;
         }
     }
 
@@ -96,9 +107,16 @@ public class WallRunning : MonoBehaviour
         camDirection.y = 0;
         camDirection = camDirection.normalized;
         
-        pc.horizontalVelocity = camDirection * wallJumpDistance;
+        float currentSpeed = pc.currentSpeed;
+        float speedRatio = currentSpeed / pc.maxSpeed;
+        
+        float finalJumpDistance = wallJumpDistance * Mathf.Lerp(0.5f, 5.0f, speedRatio);
+        
+        pc.horizontalVelocity = camDirection * finalJumpDistance;
         
         pc.verticalVelocity = wallJumpHeight;
+        
+        pc.EnableDoubleJump();
         
         pc.SetWallRunning(false);
         onWall = false;

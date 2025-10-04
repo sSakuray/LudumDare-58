@@ -4,7 +4,7 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Door
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -15,7 +15,7 @@ TagManager:
   - Wall
   - Ground
   - Slide
-  - 
+  - WoodenDoor
   - 
   - 
   - 
