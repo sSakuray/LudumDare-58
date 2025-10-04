@@ -3,22 +3,23 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     public float sens = 2f;
-    public float maxYAngle = 90f;
+    public float maxYAngle = 80f;
 
     private float rotationX = 0f;
 
-    public void Update()
-    {
-        CameraRotation();
-    }
-    
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
-    public void CameraRotation()
+    private void Update()
+    {
+        CameraRotation();
+    }
+
+
+    private void CameraRotation()
     {
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
