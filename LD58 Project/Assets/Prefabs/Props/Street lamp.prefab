@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &8142199841412952765
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: f3b07abe29dcf4b4d90103fa1293ae91, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -10.140627
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f3b07abe29dcf4b4d90103fa1293ae91, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.132
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f3b07abe29dcf4b4d90103fa1293ae91, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 4.85775
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f3b07abe29dcf4b4d90103fa1293ae91, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071067
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f3b07abe29dcf4b4d90103fa1293ae91, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f3b07abe29dcf4b4d90103fa1293ae91, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f3b07abe29dcf4b4d90103fa1293ae91, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f3b07abe29dcf4b4d90103fa1293ae91, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f3b07abe29dcf4b4d90103fa1293ae91, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f3b07abe29dcf4b4d90103fa1293ae91, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: f3b07abe29dcf4b4d90103fa1293ae91, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: fb7f96810c71c314eb0463f12bd60c44, type: 2}
+    - target: {fileID: -7511558181221131132, guid: f3b07abe29dcf4b4d90103fa1293ae91, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 73999d5a81d40af40b3dc8daded60a2b, type: 2}
+    - target: {fileID: 919132149155446097, guid: f3b07abe29dcf4b4d90103fa1293ae91, type: 3}
+      propertyPath: m_Name
+      value: Street lamp
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f3b07abe29dcf4b4d90103fa1293ae91, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5267744836955652058}
+  m_SourcePrefab: {fileID: 100100000, guid: f3b07abe29dcf4b4d90103fa1293ae91, type: 3}
+--- !u!1 &8953031042137329644 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f3b07abe29dcf4b4d90103fa1293ae91, type: 3}
+  m_PrefabInstance: {fileID: 8142199841412952765}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &5267744836955652058
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8953031042137329644}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.004007227, y: 0.0040072263, z: 0.021943584}
+  m_Center: {x: -0.0000000012805685, y: -2.328306e-10, z: -0.00032164523}
