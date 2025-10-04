@@ -7,6 +7,7 @@ public class CountdownTimer : MonoBehaviour
     public TMP_Text timerText; // Reference to the UI Text component
     public Animator animator; // Reference to the Animator component
     public float countdownTime = 120f; // Countdown time in seconds (e.g., 120 seconds = 2 minutes)
+    public bool isPaused = false;
 
     private void Start()
     {
@@ -18,6 +19,8 @@ public class CountdownTimer : MonoBehaviour
         float timeRemaining = countdownTime;
         float elapsedTime = 0f;
 
+        //нужно сделать паузу таймера!!!!!!!!!!!!!!!!!!!!!!
+        
         while (timeRemaining > 0)
         {
             // Update the timer text
@@ -46,7 +49,7 @@ public class CountdownTimer : MonoBehaviour
         }
 
         // Ensure the timer shows 00:00:00 when finished
-        UpdateTimerText(0);
+            UpdateTimerText(0);
     }
 
     private void UpdateTimerText(float time)
