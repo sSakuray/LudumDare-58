@@ -15,8 +15,13 @@ TagManager:
   - GrappWall
   - Ground
   - Slide
+<<<<<<< Updated upstream
   - 
   - 
+=======
+  - WoodenDoor
+  - SwingObj
+>>>>>>> Stashed changes
   - 
   - 
   - 

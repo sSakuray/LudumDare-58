@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float minSpeed; // Минимальная скорость ходьбы
     [SerializeField] public float maxSpeed; // Максимальная скорость бега
     [SerializeField] public float currentSpeed; // Текущая скорость персонажа
-    [SerializeField] private float acceleration; // Скорость разгона
+    [SerializeField] private float acceleration = 10f; // Скорость разгона (единиц/сек) - чем больше, тем быстрее набор скорости
     [SerializeField] private float boostDecay; // Скорость замедления после буста
     public Transform cam;
 
@@ -44,6 +44,14 @@ public class PlayerController : MonoBehaviour
     public bool freeze;
     public bool activeGrappling;
 
+    [Header("Audio")]
+    [SerializeField] private SoundPlayer soundPlayer;
+    [SerializeField] private float minStepInterval = 0.6f;
+    [SerializeField] private float maxStepInterval = 0.3f;
+    [SerializeField] private float minPitch = 0.8f;
+    [SerializeField] private float maxPitch = 1.3f;
+    private float stepTimer;
+
     [Header("Other")]
     private CharacterController controller;
     private Vector3 moveDirection;
@@ -61,6 +69,11 @@ public class PlayerController : MonoBehaviour
         hasDoubleJump = false;
         hasJumpedFromGround = false;
         startYScale = transform.localScale.y;
+        
+        if (soundPlayer == null)
+        {
+            soundPlayer = FindObjectOfType<SoundPlayer>();
+        }
     }
 
     private void Update()
@@ -185,6 +198,30 @@ public class PlayerController : MonoBehaviour
                 hasDoubleJump = false;
             }
         }
+        
+        HandleFootsteps(moving);
+    }
+
+    private void HandleFootsteps(bool moving)
+    {
+        if (moving && soundPlayer != null)
+        {
+            stepTimer += Time.deltaTime;
+            
+            float speedRatio = currentSpeed / maxSpeed;
+            float interval = Mathf.Lerp(minStepInterval, maxStepInterval, speedRatio);
+            
+            if (stepTimer >= interval)
+            {
+                float pitch = Mathf.Lerp(minPitch, maxPitch, speedRatio);
+                soundPlayer.PlaySoundWithPitch(0, pitch);
+                stepTimer = 0f;
+            }
+        }
+        else
+        {
+            stepTimer = 0f;
+        }
     }
 
     private void HandleAirMovement(bool moving)
@@ -281,6 +318,26 @@ public class PlayerController : MonoBehaviour
         if (speed > currentSpeed)
         {
             currentSpeed = speed;
+        }
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (Vector3.Dot(hit.normal, Vector3.up) < 0.7f)
+        {
+            bool hasNoTag = hit.collider.tag == "Untagged";
+            bool isDefaultLayer = hit.collider.gameObject.layer == 0;
+            
+            if (hasNoTag && isDefaultLayer)
+            {
+                currentSpeed = minSpeed;
+                horizontalVelocity = Vector3.zero;
+            }
+        }
+        
+        if (Vector3.Dot(hit.normal, Vector3.down) > 0.7f && verticalVelocity > 0)
+        {
+            verticalVelocity = 0f; 
         }
     }
 }
