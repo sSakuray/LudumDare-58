@@ -2,10 +2,11 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public float sens = 2f;
-    public float maxYAngle = 80f;
+    [Header("Camera Settings")]
+    [SerializeField] private float sens; 
+    [SerializeField] private float maxYAngle;
 
-    private float rotationX = 0f;
+    private float rotationX;
 
     private void Start()
     {
@@ -15,19 +16,12 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        CameraRotation();
-    }
-
-
-    private void CameraRotation()
-    {
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
 
         transform.parent.Rotate(Vector3.up * mouseX * sens);
 
-        rotationX -= mouseY * sens;
-        rotationX = Mathf.Clamp(rotationX, -maxYAngle, maxYAngle);
+        rotationX = Mathf.Clamp(rotationX - mouseY * sens, -maxYAngle, maxYAngle);
         transform.localRotation = Quaternion.Euler(rotationX, 0f, 0f);
     }
 }

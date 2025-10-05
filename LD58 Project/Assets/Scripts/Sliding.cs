@@ -2,14 +2,15 @@ using UnityEngine;
 
 public class Sliding : MonoBehaviour
 {
-    [SerializeField] private float maxSlideSpeed;
-    [SerializeField] private float slideAcceleration = 40f; // набор скорости на горке
-    [SerializeField] private float slideYScale = 0.5f;
-    [SerializeField] private float slopeGravityForce = -5f;
-    [SerializeField] private float groundCheckDistance = 1.2f;
-    [SerializeField] private float maxSlopeAngle = 45f;
-    [SerializeField] private LayerMask slopeLayer;
-    [SerializeField] private KeyCode slideKey;
+    [Header("Slide Settings")]
+    [SerializeField] private KeyCode slideKey; 
+    [SerializeField] private float maxSlideSpeed; // Максимальная скорость слайда
+    [SerializeField] private float slideAcceleration; // Ускорение на горке
+    [SerializeField] private float slideYScale; // Масштаб Y при слайде
+    [SerializeField] private float slopeGravityForce; // Гравитация на склоне
+    [SerializeField] private float groundCheckDistance; // Дистанция проверки земли
+    [SerializeField] private float maxSlopeAngle; // Максимальный угол склона для слайда
+    [SerializeField] private LayerMask slopeLayer; // Слой земли/склонов
 
     private CharacterController controller;
     private PlayerController pc;
@@ -34,26 +35,25 @@ public class Sliding : MonoBehaviour
         {
             StartSlide();
         }
-
         if (Input.GetKeyUp(slideKey) && isSliding)
         {
             StopSlide();
         }
-
         if (isSliding)
         {
             HandleSliding();
         }
     }
 
-    private bool CanSlide() => OnSlope() || pc.GetCurrentSpeed() >= pc.maxSpeed;
+    private bool CanSlide()
+    {
+        return OnSlope() || pc.GetCurrentSpeed() >= pc.maxSpeed;
+    }
 
     private bool OnSlope()
     {
-        Vector3 pos = transform.position + Vector3.up * 0.1f;
         LayerMask layer = slopeLayer.value != 0 ? slopeLayer : ~0;
-        
-        if (!Physics.Raycast(pos, Vector3.down, out slopeHit, groundCheckDistance + 0.5f, layer))
+        if (!Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, out slopeHit, groundCheckDistance + 0.5f, layer))
         {
             return false;
         }
@@ -64,9 +64,8 @@ public class Sliding : MonoBehaviour
 
     private bool IsGrounded()
     {
-        Vector3 pos = transform.position + Vector3.up * 0.1f;
         LayerMask layer = slopeLayer.value != 0 ? slopeLayer : ~0;
-        return Physics.Raycast(pos, Vector3.down, groundCheckDistance, layer);
+        return Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, groundCheckDistance, layer);
     }
 
     private void StartSlide()
@@ -77,7 +76,10 @@ public class Sliding : MonoBehaviour
         
         slideVelocity = controller.velocity;
         slideVelocity.y = 0;
-        if (slideVelocity.magnitude < 2f) slideVelocity = Vector3.zero;
+        if (slideVelocity.magnitude < 2f)
+        {
+            slideVelocity = Vector3.zero;
+        }
         
         maxSpeedReached = slideVelocity.magnitude;
         wasOnSlope = false;
@@ -94,21 +96,7 @@ public class Sliding : MonoBehaviour
             
             if (onSlope)
             {
-                verticalVelocity = verticalVelocity > 0 ? Mathf.MoveTowards(verticalVelocity, slopeGravityForce, 100f * Time.deltaTime) : slopeGravityForce;
-                wasOnSlope = true;
-                
-                if (slideVelocity.magnitude > 0)
-                {
-                    slideVelocity = Vector3.ProjectOnPlane(slideVelocity, slopeHit.normal).normalized * slideVelocity.magnitude;
-                }
-                
-                slideVelocity += Vector3.ProjectOnPlane(pc.cam.forward, slopeHit.normal).normalized * slideAcceleration * Time.deltaTime;
-                slideVelocity = Vector3.ClampMagnitude(slideVelocity, maxSlideSpeed);
-                
-                if (slideVelocity.magnitude > maxSpeedReached)
-                {
-                    maxSpeedReached = slideVelocity.magnitude;
-                }
+                HandleSlopeSliding();
             }
         }
         else
@@ -117,6 +105,25 @@ public class Sliding : MonoBehaviour
         }
         
         controller.Move((slideVelocity + Vector3.up * verticalVelocity) * Time.deltaTime);
+    }
+
+    private void HandleSlopeSliding()
+    {
+        verticalVelocity = verticalVelocity > 0 ? Mathf.MoveTowards(verticalVelocity, slopeGravityForce, 100f * Time.deltaTime) : slopeGravityForce;
+        wasOnSlope = true;
+
+        if (slideVelocity.magnitude > 0)
+        {
+            slideVelocity = Vector3.ProjectOnPlane(slideVelocity, slopeHit.normal).normalized * slideVelocity.magnitude;
+        }
+        
+        slideVelocity += Vector3.ProjectOnPlane(pc.cam.forward, slopeHit.normal).normalized * slideAcceleration * Time.deltaTime;
+        slideVelocity = Vector3.ClampMagnitude(slideVelocity, maxSlideSpeed);
+
+        if (slideVelocity.magnitude > maxSpeedReached)
+        {
+            maxSpeedReached = slideVelocity.magnitude;
+        }
     }
 
     private void StopSlide()
@@ -133,7 +140,18 @@ public class Sliding : MonoBehaviour
         slideVelocity = Vector3.zero;
     }
 
-    public bool IsSliding() => isSliding;
-    public bool IsGroundedForJump() => IsGrounded();
-    public void JumpWhileSliding(float force) => verticalVelocity = force;
+    public bool IsSliding()
+    {
+        return isSliding;
+    }
+    
+    public bool IsGroundedForJump()
+    {
+        return IsGrounded();
+    }
+    
+    public void JumpWhileSliding(float force)
+    {
+        verticalVelocity = force;
+    }
 }

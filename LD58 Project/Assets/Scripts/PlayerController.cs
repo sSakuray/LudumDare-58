@@ -3,36 +3,46 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Player Movement")]
-    [SerializeField] private float minSpeed;
-    [SerializeField] public float maxSpeed;
-    [SerializeField] public float currentSpeed;
-    [SerializeField] private float acceleration; 
-    [SerializeField] private float boostDecay;
+    [SerializeField] private float minSpeed; // Минимальная скорость ходьбы
+    [SerializeField] public float maxSpeed; // Максимальная скорость бега
+    [SerializeField] public float currentSpeed; // Текущая скорость персонажа
+    [SerializeField] private float acceleration; // Скорость разгона
+    [SerializeField] private float boostDecay; // Скорость замедления после буста
     public Transform cam;
 
     [Header("Jump")]
-    [SerializeField] public float jumpForce;
-    [SerializeField] private float jumpCooldown;
-    [SerializeField] private float airMultiplier;
-    [SerializeField] public float gravity;
-    [SerializeField] private float doubleJumpDelay = 0.2f;
+    [SerializeField] public float jumpForce; // Высота прыжка
+    [SerializeField] private float jumpCooldown; // Задержка между прыжками
+    [SerializeField] private float airMultiplier; // Множитель управления в воздухе
+    [SerializeField] private float airControlStrength; // Сила управления в воздухе
+    [SerializeField] private float jumpMomentumMultiplier; // Бонус дальности прыжка от скорости (0.5 = +50% при макс скорости)
+    [SerializeField] private float jumpBoostDuration; // Время плавного набора скорости прыжка в секундах
+    [SerializeField] public float gravity; // Гравитация
+    [SerializeField] private float doubleJumpDelay; // Задержка перед двойным прыжком
     private bool readyToJump;
     private bool hasDoubleJump;
     private bool hasJumpedFromGround;
     private float timeSinceFirstJump;
+    private float jumpMomentumTimer;
+    private float targetJumpVelocity;
     private KeyCode jumpKey = KeyCode.Space;
 
     [Header("Crouching")]
-    [SerializeField] private float crouchSpeed;
-    [SerializeField] private float crouchYScale;
-    [SerializeField] private float startYScale;
+    [SerializeField] private float crouchSpeed; // Скорость приседа
+    [SerializeField] private float crouchYScale; // Масштаб Y при приседе
+    [SerializeField] private float startYScale; // Начальный масштаб Y
     private bool crouching;
     private KeyCode crouchKey = KeyCode.LeftControl;
 
-    [SerializeField] private LayerMask whatIsGround;
-    [SerializeField] private float groundCheckDistance = 1.08f;
+    [Header("Ground Check")]
+    [SerializeField] private LayerMask whatIsGround; // Слой земли
+    [SerializeField] private float groundCheckDistance; // Дистанция проверки земли
     public Transform player;
     public bool grounded;
+
+    [Header("Hook")]
+    public bool freeze;
+    public bool activeGrappling;
 
     [Header("Other")]
     private CharacterController controller;
@@ -62,8 +72,15 @@ public class PlayerController : MonoBehaviour
             timeSinceFirstJump += Time.deltaTime;
         }
         
+        if (freeze)
+        {
+            horizontalVelocity = Vector3.zero;
+            verticalVelocity = 0f;
+            return; 
+        }
+
         HandleInput();
-        
+
         if (!sliding && !wallRunning)
         {
             MovePlayer();
@@ -79,73 +96,88 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(jumpKey))
         {
-            if (readyToJump && (grounded || (sliding && slidingScript.IsGroundedForJump())))
-            {
-                readyToJump = false;
-                hasJumpedFromGround = true;
-                timeSinceFirstJump = 0f;
-                hasDoubleJump = true;
-                
-                if (sliding)
-                {
-                    slidingScript.JumpWhileSliding(jumpForce);
-                }
-                else
-                {
-                    Jump();
-                }
-                Invoke(nameof(ResetJump), jumpCooldown);
-            }
-            else if (!grounded && hasDoubleJump && timeSinceFirstJump >= doubleJumpDelay)
-            {
-                hasDoubleJump = false;
-                Jump();
-            }
-            else if (!grounded && !hasJumpedFromGround && !hasDoubleJump && readyToJump)
-            {
-                readyToJump = false;
-                Jump();
-            }
+            HandleJumpInput();
         }
-
         if (Input.GetKeyDown(crouchKey) && !sliding)
         {
             Crouch();
         }
     }
 
+    private void HandleJumpInput()
+    {
+        bool canGroundJump = readyToJump && (grounded || (sliding && slidingScript.IsGroundedForJump()));
+        bool canDoubleJump = !grounded && hasDoubleJump && timeSinceFirstJump >= doubleJumpDelay;
+        bool canFirstAirJump = !grounded && !hasJumpedFromGround && readyToJump;
+
+        if (canGroundJump)
+        {
+            readyToJump = false;
+            hasJumpedFromGround = true;
+            timeSinceFirstJump = 0f;
+            hasDoubleJump = true;
+
+            if (sliding)
+            {
+                slidingScript.JumpWhileSliding(jumpForce);
+            }
+            else
+            {
+                Jump();
+            }
+            
+            Invoke(nameof(ResetJump), jumpCooldown);
+        }
+        else if (canDoubleJump)
+        {
+            hasDoubleJump = false;
+            Jump();
+        }
+        else if (canFirstAirJump)
+        {
+            readyToJump = false;
+            Jump();
+            Invoke(nameof(ResetJump), jumpCooldown);
+        }
+    }
+
     private void MovePlayer()
     {
         moveDirection = transform.forward * Input.GetAxisRaw("Vertical") + transform.right * Input.GetAxisRaw("Horizontal");
-        float targetSpeed = crouching ? crouchSpeed : maxSpeed;
         bool moving = moveDirection.magnitude > 0.1f;
 
         if (grounded)
         {
-            if (currentSpeed > targetSpeed)
-            {
-                currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, boostDecay * Time.deltaTime);
-            }
-            currentSpeed = moving ? (currentSpeed < minSpeed ? minSpeed : Mathf.MoveTowards(currentSpeed, targetSpeed, acceleration * Time.deltaTime)) : 0f;
+            HandleGroundMovement(moving);
+        }
+        else
+        {
+            HandleAirMovement(moving);
+        }
+        ApplyGravity();
+        controller.Move((horizontalVelocity + Vector3.up * verticalVelocity) * Time.deltaTime);
+    }
+
+    private void HandleGroundMovement(bool moving)
+    {
+        float targetSpeed = crouching ? crouchSpeed : maxSpeed;
+
+        if (currentSpeed > targetSpeed)
+        {
+            currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, boostDecay * Time.deltaTime);
+        }
+        
+        currentSpeed = moving ? Mathf.Max(minSpeed, Mathf.MoveTowards(currentSpeed, targetSpeed, acceleration * Time.deltaTime)) : 0f;
+        
+        if (verticalVelocity <= 0)
+        {
             horizontalVelocity = moving ? moveDirection.normalized * currentSpeed : Vector3.zero;
         }
-        else if (moving)
-        {
-            horizontalVelocity = Vector3.Lerp(horizontalVelocity, moveDirection.normalized * currentSpeed * airMultiplier, airMultiplier * Time.deltaTime * 2f);
-        }
-        else if (!grounded)
-        {
-            float horizontal = Input.GetAxisRaw("Horizontal");
-            if (Mathf.Abs(horizontal) > 0.1f)
-            {
-                Vector3 strafeDir = transform.right * horizontal * currentSpeed * airMultiplier * 0.5f;
-                horizontalVelocity += strafeDir * Time.deltaTime * 10f;
-            }
-        }
-
-        if (grounded && verticalVelocity < 0)
+        
+        if (verticalVelocity < 0)
         {
             verticalVelocity = -2f;
+            
             if (!readyToJump)
             {
                 hasJumpedFromGround = false;
@@ -153,17 +185,62 @@ public class PlayerController : MonoBehaviour
                 hasDoubleJump = false;
             }
         }
-        else
+    }
+
+    private void HandleAirMovement(bool moving)
+    {
+        if (jumpMomentumTimer > 0)
+        {
+            jumpMomentumTimer -= Time.deltaTime;
+            float progress = 1f - (jumpMomentumTimer / jumpBoostDuration);
+            float currentTarget = Mathf.Lerp(horizontalVelocity.magnitude, targetJumpVelocity, progress);
+            
+            if (horizontalVelocity.magnitude > 0.1f)
+            {
+                horizontalVelocity = horizontalVelocity.normalized * currentTarget;
+            }
+        }
+        
+        if (moving)
+        {
+            float currentMagnitude = horizontalVelocity.magnitude;
+            float minTarget = currentMagnitude * 0.95f;
+            float airTarget = currentSpeed * airMultiplier;
+            Vector3 targetVelocity = moveDirection.normalized * Mathf.Max(minTarget, airTarget);
+            horizontalVelocity = Vector3.Lerp(horizontalVelocity, targetVelocity, airControlStrength * Time.deltaTime);
+        }
+    }
+
+    private void ApplyGravity()
+    {
+        if (!activeGrappling && !wallRunning && !grounded)
         {
             verticalVelocity += gravity * Time.deltaTime;
         }
-        
-        controller.Move((horizontalVelocity + Vector3.up * verticalVelocity) * Time.deltaTime);
     }
 
-    private void Jump() => verticalVelocity = jumpForce;
+    private void Jump()
+    {
+        verticalVelocity = jumpForce;
+        
+        if (horizontalVelocity.magnitude > 0.1f && currentSpeed > 0)
+        {
+            float speedRatio = currentSpeed / maxSpeed;
+            float boost = 1f + (speedRatio * jumpMomentumMultiplier);
+            targetJumpVelocity = horizontalVelocity.magnitude * boost;
+            jumpMomentumTimer = jumpBoostDuration;
+        }
+        else
+        {
+            targetJumpVelocity = 0f;
+            jumpMomentumTimer = 0f;
+        }
+    }
 
-    private void ResetJump() => readyToJump = true;
+    private void ResetJump()
+    {
+        readyToJump = true;
+    }
 
     private void Crouch()
     {
@@ -172,11 +249,20 @@ public class PlayerController : MonoBehaviour
         transform.localScale = new Vector3(transform.localScale.x, yScale, transform.localScale.z);
     }
 
-    public void SetSliding(bool isSliding) => sliding = isSliding;
+    public void SetSliding(bool isSliding)
+    {
+        sliding = isSliding;
+    }
     
-    public void SetWallRunning(bool isWallRunning) => wallRunning = isWallRunning;
+    public void SetWallRunning(bool isWallRunning)
+    {
+        wallRunning = isWallRunning;
+    }
     
-    public void DisableDoubleJump() => hasDoubleJump = false;
+    public void DisableDoubleJump()
+    {
+        hasDoubleJump = false;
+    }
     
     public void EnableDoubleJump()
     {
@@ -185,7 +271,10 @@ public class PlayerController : MonoBehaviour
         timeSinceFirstJump = doubleJumpDelay;
     }
 
-    public float GetCurrentSpeed() => currentSpeed;
+    public float GetCurrentSpeed()
+    {
+        return currentSpeed;
+    }
     
     public void ApplySpeedBoost(float speed)
     {

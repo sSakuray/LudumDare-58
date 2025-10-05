@@ -2,16 +2,16 @@ using UnityEngine;
 
 public class WallRunning : MonoBehaviour
 {
-    [SerializeField] private float wallRunSpeed = 6f;
-    [SerializeField] private float wallStickForce = 50f;
-    [SerializeField] private float wallJumpHeight = 8f;
-    [SerializeField] private float wallJumpDistance = 6f;
-    [SerializeField] private float maxWallRunTime = 2f;
-    [SerializeField] private Transform cam;
+    [Header("Wall Run Settings")]
+    [SerializeField] private float wallRunSpeed; // Скорость бега по стене
+    [SerializeField] private float wallStickForce; // Сила прилипания к стене
+    [SerializeField] private float wallJumpHeight; // Высота прыжка от стены
+    [SerializeField] private float wallJumpDistance; // Дальность прыжка от стены
+    [SerializeField] private float maxWallRunTime; // Максимальное время бега по стене в секундах
+    [SerializeField] private Transform cam; 
 
     private CharacterController controller;
     private PlayerController pc;
-    
     private bool onWall;
     private Vector3 wallNormal;
     private float wallRunTimer;
@@ -25,13 +25,14 @@ public class WallRunning : MonoBehaviour
 
     private void Update()
     {
-        if (onWall && !pc.grounded && wallRunTimer > 0)
+        bool canWallRun = onWall && !pc.grounded && wallRunTimer > 0;
+        
+        if (canWallRun)
         {
             pc.SetWallRunning(true);
             WallRun();
-            
             wallRunTimer -= Time.deltaTime;
-            
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 WallJump();
@@ -43,9 +44,7 @@ public class WallRunning : MonoBehaviour
             {
                 pc.horizontalVelocity = Vector3.zero;
             }
-            
             pc.SetWallRunning(false);
-            
             if (pc.grounded)
             {
                 wallRunTimer = maxWallRunTime;
@@ -78,8 +77,6 @@ public class WallRunning : MonoBehaviour
 
     private void WallRun()
     {
-        Vector3 stickDir = -wallNormal * wallStickForce;
-        
         float vertical = Input.GetAxisRaw("Vertical");
         float horizontal = Input.GetAxisRaw("Horizontal");
         
@@ -94,30 +91,21 @@ public class WallRunning : MonoBehaviour
         }
         
         moveDir.y = 0;
-        moveDir = moveDir.normalized * wallRunSpeed;
-        
-        controller.Move((stickDir + moveDir) * Time.deltaTime);
+        Vector3 movement = -wallNormal * wallStickForce + moveDir.normalized * wallRunSpeed;
+        controller.Move(movement * Time.deltaTime);
     }
 
     private void WallJump()
     {
-        pc.horizontalVelocity = Vector3.zero;
-        
         Vector3 camDirection = cam.forward;
         camDirection.y = 0;
-        camDirection = camDirection.normalized;
         
-        float currentSpeed = pc.currentSpeed;
-        float speedRatio = currentSpeed / pc.maxSpeed;
-        
+        float speedRatio = pc.currentSpeed / pc.maxSpeed;
         float finalJumpDistance = wallJumpDistance * Mathf.Lerp(0.5f, 5.0f, speedRatio);
         
-        pc.horizontalVelocity = camDirection * finalJumpDistance;
-        
+        pc.horizontalVelocity = camDirection.normalized * finalJumpDistance;
         pc.verticalVelocity = wallJumpHeight;
-        
         pc.EnableDoubleJump();
-        
         pc.SetWallRunning(false);
         onWall = false;
     }
