@@ -9,6 +9,8 @@ public class Swinging : MonoBehaviour
     [SerializeField] private LineRenderer lr;          
     [SerializeField] private KeyCode swingKey = KeyCode.Mouse1; 
     [SerializeField] private float maxSwingDistance; // Максимальная дистанция крюка 
+    [SerializeField] private float swingForce = 15f; // Базовая сила раскачки
+    [SerializeField] private float swingSpeedBonus = 25f; // Бонус силы от скорости персонажа
     private int ropeSegments = 25;     
     private float ropeWaveSpeed = 10f;
     private float ropeWaveHeight = 0.5f; 
@@ -81,7 +83,7 @@ public class Swinging : MonoBehaviour
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         if (input.magnitude > 0.1f)
         {
-            float force = 15f + (pc.currentSpeed / pc.maxSpeed * 25f);
+            float force = swingForce + (pc.currentSpeed / pc.maxSpeed * swingSpeedBonus);
             Vector3 inputDir = (cam.right * input.x + cam.forward * input.y); inputDir.y = 0; inputDir.Normalize();
             Vector3 tangInput = Vector3.ProjectOnPlane(inputDir, ropeDir);
             Vector3 tangVel = Vector3.ProjectOnPlane(vel, ropeDir);

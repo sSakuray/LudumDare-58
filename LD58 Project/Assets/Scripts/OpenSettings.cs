@@ -9,12 +9,10 @@ public class OpenSettings : MonoBehaviour
     public GameObject cam;
     private PlayerController playerController;
     private CameraController cameraController;
-    private Grappling grappling;
 
     void Start()
     {
         playerController = player.GetComponent<PlayerController>();
-        grappling = player.GetComponent<Grappling>();
         cameraController = cam.GetComponent<CameraController>();
         
     }
@@ -30,7 +28,6 @@ public class OpenSettings : MonoBehaviour
                 settingsScreen.SetActive(true);
                 playerController.enabled = false;
                 cameraController.enabled = false;
-                grappling.enabled = false;
                 isSettingsOpen = true;
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
@@ -41,7 +38,6 @@ public class OpenSettings : MonoBehaviour
                 settingsScreen.SetActive(false);
                 playerController.enabled = true;
                 cameraController.enabled = true;
-                grappling.enabled = true;
                 isSettingsOpen = false;
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
