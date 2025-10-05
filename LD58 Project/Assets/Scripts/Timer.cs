@@ -4,16 +4,10 @@ using System.Collections;
 
 public class Timer : MonoBehaviour
 {
-<<<<<<< Updated upstream
-    public TMP_Text timerText; // Reference to the UI Text component
-    public Animator animator; // Reference to the Animator component
-    public float countdownTime = 120f; // Countdown time in seconds (e.g., 120 seconds = 2 minutes)
-=======
     public TMP_Text timerText; 
     public Animator animator; 
     public float countdownTime = 120f; 
     public bool isPaused = false;
->>>>>>> Stashed changes
 
     private float timeRemaining;
     private float elapsedTime = 0f;
@@ -31,12 +25,6 @@ public class Timer : MonoBehaviour
 
     private IEnumerator Countdown()
     {
-<<<<<<< Updated upstream
-        float timeRemaining = countdownTime;
-        float elapsedTime = 0f;
-
-=======
->>>>>>> Stashed changes
         while (timeRemaining > 0)
         {
             UpdateTimerText(timeRemaining);
@@ -58,12 +46,7 @@ public class Timer : MonoBehaviour
             }
         }
 
-<<<<<<< Updated upstream
-        // Ensure the timer shows 00:00:00 when finished
-        UpdateTimerText(0);
-=======
             UpdateTimerText(0);
->>>>>>> Stashed changes
     }
 
     private void UpdateTimerText(float time)
