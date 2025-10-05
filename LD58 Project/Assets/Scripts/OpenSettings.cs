@@ -7,12 +7,10 @@ public class OpenSettings : MonoBehaviour
     public bool isSettingsOpen = false;
     public GameObject player;
     public GameObject cam;
-    private PlayerController playerController;
     private CameraController cameraController;
 
     void Start()
     {
-        playerController = player.GetComponent<PlayerController>();
         cameraController = cam.GetComponent<CameraController>();
         
     }
@@ -26,7 +24,6 @@ public class OpenSettings : MonoBehaviour
             {
                 //open settings
                 settingsScreen.SetActive(true);
-                playerController.enabled = false;
                 cameraController.enabled = false;
                 isSettingsOpen = true;
                 Cursor.lockState = CursorLockMode.None;
@@ -36,7 +33,6 @@ public class OpenSettings : MonoBehaviour
             {
                 //close settings
                 settingsScreen.SetActive(false);
-                playerController.enabled = true;
                 cameraController.enabled = true;
                 isSettingsOpen = false;
                 Cursor.lockState = CursorLockMode.Locked;

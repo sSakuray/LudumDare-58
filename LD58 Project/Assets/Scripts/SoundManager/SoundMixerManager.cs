@@ -18,12 +18,12 @@ public class SoundMixerManager : MonoBehaviour
     public void SetMusicVolume()
     {
         float volume = musicSlider.value;
-        audioMixer.SetFloat("MasterVolume", volume);
+        audioMixer.SetFloat("Music", volume);
     }
 
     public void SetSFXVolume()
     {
         float volume = sfxSlider.value;
-        audioMixer.SetFloat("MasterVolume", volume);
+        audioMixer.SetFloat("SFX", volume);
     }
 }
