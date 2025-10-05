@@ -25,8 +25,7 @@ public class Grappling : MonoBehaviour
     private float grapplingCdTimer;
     private PlayerController pc;
     private bool hookFlying;
-    private float hookFlyProgress;
-    private Soul targetSoul; 
+    private float hookFlyProgress; 
 
     void Start()
     {
@@ -116,26 +115,12 @@ public class Grappling : MonoBehaviour
         bool hit = Physics.Raycast(cam.position, cam.forward, out RaycastHit hitInfo, maxGrappleDistance);
         grapplePoint = hit ? hitInfo.point : cam.position + cam.forward * maxGrappleDistance;
         
-        targetSoul = null;
-        if (hit)
-        {
-            Soul soul = hitInfo.collider.GetComponent<Soul>();
-            if (soul != null)
-            {
-                targetSoul = soul;
-            }
-        }
-        
         lr.enabled = true; lr.positionCount = ropeSegments;
         currentGrapplePosition = grappleGunTip.position;
         hookFlying = true;
         hookFlyProgress = 0f;
         
-        if (targetSoul != null)
-        {
-            Invoke(nameof(StopGrapple), 0.5f);
-        }
-        else if (hit && ((1 << hitInfo.collider.gameObject.layer) & whatIsGrappleable) != 0)
+        if (hit && ((1 << hitInfo.collider.gameObject.layer) & whatIsGrappleable) != 0)
         {
             pc.horizontalVelocity = Vector3.zero; pc.verticalVelocity = 0f;
             pc.activeGrappling = true; pulling = true;
@@ -181,12 +166,6 @@ public class Grappling : MonoBehaviour
             {
                 hookFlyProgress = 1f;
                 hookFlying = false;
-                
-                if (targetSoul != null)
-                {
-                    targetSoul.Collect();
-                    targetSoul = null;
-                }
             }
             currentGrapplePosition = Vector3.Lerp(startPos, endPos, hookFlyProgress);
         }

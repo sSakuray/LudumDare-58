@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class WallRunning : MonoBehaviour
 {
+    [Header("Wall Run Settings")]
     [SerializeField] private float wallRunSpeed; // Скорость бега по стене
     [SerializeField] private float wallStickForce; // Сила прилипания к стене
     [SerializeField] private float wallJumpHeight; // Высота прыжка от стены
