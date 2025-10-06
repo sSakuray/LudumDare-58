@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Level1.unity
     guid: 68bcafad90cae3e49b1b4f53b2e45d80
   - enabled: 1
+    path: Assets/Scenes/Level2.unity
+    guid: 85084eb740ac9da428ff3cafc0286f96
+  - enabled: 1
     path: Assets/Scenes/DeadScreens/Died by Darkness.unity
     guid: 55963572151aa4f409ab8b9764acc99a
   - enabled: 1
