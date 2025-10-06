@@ -28446,6 +28446,7 @@ GameObject:
   - component: {fileID: 1021051008}
   - component: {fileID: 1021051007}
   - component: {fileID: 1021051010}
+  - component: {fileID: 1021051011}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -28518,6 +28519,19 @@ MonoBehaviour:
   timeMax: 40
   flicker: {fileID: 2087466973}
   rush: {fileID: 0}
+--- !u!114 &1021051011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1021051006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25beca027763a5748b3a169b348caa8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneName: Died By Timer
 --- !u!1001 &1025864730
 PrefabInstance:
   m_ObjectHideFlags: 0
