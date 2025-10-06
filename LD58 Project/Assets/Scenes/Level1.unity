@@ -2370,7 +2370,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2124519426893840263, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2200243145758553564, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
       propertyPath: m_LocalPosition.x
@@ -21054,7 +21054,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2124519426893840263, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2200243145758553564, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
       propertyPath: m_LocalPosition.x
@@ -23955,7 +23955,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2124519426893840263, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2200243145758553564, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
       propertyPath: m_LocalPosition.x
@@ -40111,45 +40111,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 105913142507259705, guid: 0a19c6466734df84e9d2c67f6a47f6c8, type: 3}
-      propertyPath: m_Parameters.colorGradient.key0.b
-      value: 0
+    - target: {fileID: 604443346659982826, guid: 0a19c6466734df84e9d2c67f6a47f6c8, type: 3}
+      propertyPath: maxSlideSpeed
+      value: 20
       objectReference: {fileID: 0}
-    - target: {fileID: 105913142507259705, guid: 0a19c6466734df84e9d2c67f6a47f6c8, type: 3}
-      propertyPath: m_Parameters.colorGradient.key0.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 105913142507259705, guid: 0a19c6466734df84e9d2c67f6a47f6c8, type: 3}
-      propertyPath: m_Parameters.colorGradient.key0.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 105913142507259705, guid: 0a19c6466734df84e9d2c67f6a47f6c8, type: 3}
-      propertyPath: m_Parameters.colorGradient.m_ColorSpace
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 338185978019556583, guid: 0a19c6466734df84e9d2c67f6a47f6c8, type: 3}
-      propertyPath: maxSpeed
+    - target: {fileID: 604443346659982826, guid: 0a19c6466734df84e9d2c67f6a47f6c8, type: 3}
+      propertyPath: slideAcceleration
       value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 338185978019556583, guid: 0a19c6466734df84e9d2c67f6a47f6c8, type: 3}
-      propertyPath: airControlStrength
-      value: 8.01
       objectReference: {fileID: 0}
     - target: {fileID: 2719375131843527529, guid: 0a19c6466734df84e9d2c67f6a47f6c8, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 2750861042833108285, guid: 0a19c6466734df84e9d2c67f6a47f6c8, type: 3}
-      propertyPath: wallJumpHeight
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2750861042833108285, guid: 0a19c6466734df84e9d2c67f6a47f6c8, type: 3}
-      propertyPath: wallJumpDistance
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3427850268201048476, guid: 0a19c6466734df84e9d2c67f6a47f6c8, type: 3}
-      propertyPath: grappleSpeed
-      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7995943518710770889, guid: 0a19c6466734df84e9d2c67f6a47f6c8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -40190,18 +40162,6 @@ PrefabInstance:
     - target: {fileID: 7995943518710770889, guid: 0a19c6466734df84e9d2c67f6a47f6c8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9213688094771892307, guid: 0a19c6466734df84e9d2c67f6a47f6c8, type: 3}
-      propertyPath: swingForce
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9213688094771892307, guid: 0a19c6466734df84e9d2c67f6a47f6c8, type: 3}
-      propertyPath: swingSpeedBonus
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 9213688094771892307, guid: 0a19c6466734df84e9d2c67f6a47f6c8, type: 3}
-      propertyPath: maxSwingDistance
-      value: 25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
