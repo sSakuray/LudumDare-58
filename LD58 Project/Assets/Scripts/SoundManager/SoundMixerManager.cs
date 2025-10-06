@@ -9,6 +9,28 @@ public class SoundMixerManager : MonoBehaviour
     [SerializeField] private Slider masterSlider;
     [SerializeField] private Slider sfxSlider;
 
+    private void Start()
+    {
+        // Настройка диапазонов слайдеров для децибел (-80 до 0)
+        if (masterSlider != null)
+        {
+            masterSlider.minValue = -80f;
+            masterSlider.maxValue = 0f;
+        }
+        
+        if (musicSlider != null)
+        {
+            musicSlider.minValue = -80f;
+            musicSlider.maxValue = 0f;
+        }
+        
+        if (sfxSlider != null)
+        {
+            sfxSlider.minValue = -80f;
+            sfxSlider.maxValue = 0f;
+        }
+    }
+
     public void SetMasterVolume()
     {
         float volume = masterSlider.value;
@@ -18,12 +40,12 @@ public class SoundMixerManager : MonoBehaviour
     public void SetMusicVolume()
     {
         float volume = musicSlider.value;
-        audioMixer.SetFloat("MasterVolume", volume);
+        audioMixer.SetFloat("MusicVolume", volume);
     }
 
     public void SetSFXVolume()
     {
         float volume = sfxSlider.value;
-        audioMixer.SetFloat("MasterVolume", volume);
+        audioMixer.SetFloat("SFXVolume", volume);
     }
 }

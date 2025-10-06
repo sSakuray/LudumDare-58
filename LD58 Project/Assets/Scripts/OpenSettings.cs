@@ -17,30 +17,29 @@ public class OpenSettings : MonoBehaviour
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isSettingsOpen == false)
             {
-                //open settings
                 settingsScreen.SetActive(true);
                 playerController.enabled = false;
                 cameraController.enabled = false;
                 isSettingsOpen = true;
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+                Time.timeScale = 0f;
             }
             else
             {
-                //close settings
                 settingsScreen.SetActive(false);
                 playerController.enabled = true;
                 cameraController.enabled = true;
                 isSettingsOpen = false;
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
+                Time.timeScale = 1f;
             }
         }
     }

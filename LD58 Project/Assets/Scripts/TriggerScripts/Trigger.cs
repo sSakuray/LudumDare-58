@@ -18,7 +18,7 @@ public class Trigger : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
+
     void OnTriggerExit(Collider other)
     {
         if (!String.IsNullOrEmpty(tagFilter) && !other.gameObject.CompareTag(tagFilter)) return;

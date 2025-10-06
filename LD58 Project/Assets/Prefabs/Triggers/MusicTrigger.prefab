@@ -10,13 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 8182855309922404285}
   - component: {fileID: 8023379373170413535}
-  - component: {fileID: 3980299045907546193}
+  - component: {fileID: 85589801316523076}
   m_Layer: 0
   m_Name: MusicTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &8182855309922404285
 Transform:
@@ -54,7 +54,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1.2628438, z: 1}
   m_Center: {x: 0, y: 0.6743673, z: 0}
---- !u!114 &3980299045907546193
+--- !u!114 &85589801316523076
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -85,4 +85,4 @@ MonoBehaviour:
   onTriggerExit:
     m_PersistentCalls:
       m_Calls: []
-  tagFilter: 
+  tagFilter: Player
