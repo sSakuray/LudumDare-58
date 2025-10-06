@@ -14,10 +14,15 @@ public class Timer : MonoBehaviour
     private float timeRemaining;
     private float elapsedTime = 0f;
 
-    private void Start()
+    public void StarTimer()
     {
         timeRemaining = countdownTime;
         StartCoroutine(Countdown());
+    }
+
+    private void Start()
+    {
+
     }
 
     public void AddTime(float seconds)
@@ -42,7 +47,7 @@ public class Timer : MonoBehaviour
 
                 elapsedTime = 0f;
             }
-            if (timeRemaining < 30)
+            if (timeRemaining < 10)
             {
                 musicPitcher.pitch = musicPitch;
                 timerText.color = Color.red;
