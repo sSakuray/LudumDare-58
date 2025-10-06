@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/DeadScreens/StartScreen.unity
     guid: dc2f4ffa3fa78d94f842e1190fb2d4b2
   - enabled: 1
+    path: Assets/Scenes/DeadScreens/Comics.unity
+    guid: 751f45cfeb24e534f8b1ebab268bc508
+  - enabled: 1
     path: Assets/Scenes/Tutorial.unity
     guid: 35cbfe7fe4102224c974df29d1853004
   - enabled: 1
