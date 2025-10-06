@@ -15547,6 +15547,7 @@ GameObject:
   - component: {fileID: 395552426}
   - component: {fileID: 395552427}
   - component: {fileID: 395552428}
+  - component: {fileID: 395552429}
   m_Layer: 0
   m_Name: RushTrigger
   m_TagString: Untagged
@@ -15605,11 +15606,38 @@ MonoBehaviour:
   destroyOnTriggerEvent: 0
   onTriggerEnter:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 395552429}
+        m_TargetAssemblyTypeName: RushSummon, Assembly-CSharp
+        m_MethodName: RushSummonVoid
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onTriggerExit:
     m_PersistentCalls:
       m_Calls: []
-  tagFilter: 
+  tagFilter: Player
+--- !u!114 &395552429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 395552425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34aec73226fa64c40be6ce7eb13c2b57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnPoint: {fileID: 1411125080}
+  rushPrefab: {fileID: 7917837499580804140, guid: a8c0146b36b38694888a69fafcd19249, type: 3}
+  rushNotifUI: {fileID: 1823768602}
 --- !u!1001 &396194477
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -62050,7 +62078,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
