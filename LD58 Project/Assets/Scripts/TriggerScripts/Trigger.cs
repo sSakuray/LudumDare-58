@@ -1,27 +1,18 @@
 using UnityEngine;
-using UnityEngine.Events;
-using System;
 
 public class Trigger : MonoBehaviour
 {
-    [SerializeField] bool destroyOnTriggerEvent;
-    [SerializeField] UnityEvent onTriggerEnter;
-    [SerializeField] UnityEvent onTriggerExit;
     [SerializeField] string tagFilter;
+    [SerializeField] int musicTrackIndex;
 
     void OnTriggerEnter(Collider other)
     {
-        if (!String.IsNullOrEmpty(tagFilter) && !other.gameObject.CompareTag(tagFilter)) return;
-        onTriggerEnter.Invoke();
-        if (destroyOnTriggerEvent)
+        if (!string.IsNullOrEmpty(tagFilter) && !other.gameObject.CompareTag(tagFilter)) return;
+        
+        MusicSwitcher musicSwitcher = FindObjectOfType<MusicSwitcher>();
+        if (musicSwitcher != null)
         {
-            Destroy(gameObject);
+            musicSwitcher.PlayTrack(musicTrackIndex);
         }
-    }
-    
-    void OnTriggerExit(Collider other)
-    {
-        if (!String.IsNullOrEmpty(tagFilter) && !other.gameObject.CompareTag(tagFilter)) return;
-        onTriggerExit.Invoke();
     }
 }

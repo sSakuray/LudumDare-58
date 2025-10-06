@@ -7,36 +7,39 @@ public class OpenSettings : MonoBehaviour
     public bool isSettingsOpen = false;
     public GameObject player;
     public GameObject cam;
+    private PlayerController playerController;
     private CameraController cameraController;
 
     void Start()
     {
+        playerController = player.GetComponent<PlayerController>();
         cameraController = cam.GetComponent<CameraController>();
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isSettingsOpen == false)
             {
-                //open settings
                 settingsScreen.SetActive(true);
+                playerController.enabled = false;
                 cameraController.enabled = false;
                 isSettingsOpen = true;
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+                Time.timeScale = 0f;
             }
             else
             {
-                //close settings
                 settingsScreen.SetActive(false);
+                playerController.enabled = true;
                 cameraController.enabled = true;
                 isSettingsOpen = false;
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
+                Time.timeScale = 1f;
             }
         }
     }
