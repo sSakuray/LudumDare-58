@@ -1187,7 +1187,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: You've died to flicker. Just don't move when flicker has his eyes open....
+  m_text: "Angel found you. Just don\u2019t move when you see that face in front
+    of you."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 66af1c039260be1418e7b3e982b67958, type: 2}
   m_sharedMaterial: {fileID: -8586210935419689161, guid: 66af1c039260be1418e7b3e982b67958, type: 2}
