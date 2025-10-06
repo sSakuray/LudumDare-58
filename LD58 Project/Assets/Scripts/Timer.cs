@@ -8,6 +8,8 @@ public class Timer : MonoBehaviour
     public Animator animator; 
     public float countdownTime = 120f; 
     public bool isPaused = false;
+    public AudioSource musicPitcher;
+    public float musicPitch = 1.2f;
 
     private float timeRemaining;
     private float elapsedTime = 0f;
@@ -42,6 +44,7 @@ public class Timer : MonoBehaviour
             }
             if (timeRemaining < 30)
             {
+                musicPitcher.pitch = musicPitch;
                 timerText.color = Color.red;
             }
         }
