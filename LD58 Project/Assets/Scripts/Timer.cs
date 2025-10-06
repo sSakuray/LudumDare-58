@@ -20,10 +20,6 @@ public class Timer : MonoBehaviour
         StartCoroutine(Countdown());
     }
 
-    private void Start()
-    {
-
-    }
 
     public void AddTime(float seconds)
     {
