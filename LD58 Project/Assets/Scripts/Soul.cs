@@ -6,7 +6,7 @@ public class Soul : MonoBehaviour
     [SerializeField] private float timeToAdd = 10f;
     [SerializeField] private Renderer objectRenderer; // Renderer объекта с материалом
     [SerializeField] private float effectDuration = 1f; // Длительность эффекта перед удалением
-    [SerializeField] private AudioClip collectSound;
+    [SerializeField] private GameObject collectSound;
 
     private Material material;
     private bool collected = false;
@@ -35,7 +35,7 @@ public class Soul : MonoBehaviour
         
         if (collectSound != null)
         {
-            AudioSource.PlayClipAtPoint(collectSound, transform.position);
+            collectSound.GetComponent<AudioSource>().Play();
         }
         
         // Запускаем эффект растворения

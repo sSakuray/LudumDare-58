@@ -151,19 +151,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 77e2e2be6a1719740b2f434681c59a48, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -70.61
+      value: 15.226464
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 77e2e2be6a1719740b2f434681c59a48, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 22.36
+      value: 0.11547375
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 77e2e2be6a1719740b2f434681c59a48, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 325.67
+      value: 28.479382
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 77e2e2be6a1719740b2f434681c59a48, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.13052653
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 77e2e2be6a1719740b2f434681c59a48, type: 3}
       propertyPath: m_LocalRotation.x
@@ -171,7 +171,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 77e2e2be6a1719740b2f434681c59a48, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.9914448
+      value: -0.70710677
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 77e2e2be6a1719740b2f434681c59a48, type: 3}
       propertyPath: m_LocalRotation.z
@@ -183,7 +183,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 77e2e2be6a1719740b2f434681c59a48, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -165
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 77e2e2be6a1719740b2f434681c59a48, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -231,7 +231,7 @@ MonoBehaviour:
   timeToAdd: 4
   objectRenderer: {fileID: 8830351040422422943}
   effectDuration: 1
-  collectSound: {fileID: 0}
+  collectSound: {fileID: 4280523352494706890}
 --- !u!65 &2280374684424393700
 BoxCollider:
   m_ObjectHideFlags: 0
