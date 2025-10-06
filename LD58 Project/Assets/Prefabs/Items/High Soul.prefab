@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9403fece38b327847988f4c0dec6e680, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToAdd: 10
+  timeToAdd: 4
   objectRenderer: {fileID: 8830351040422422943}
   effectDuration: 1
   collectSound: {fileID: 0}
