@@ -80808,6 +80808,7 @@ GameObject:
   - component: {fileID: 1984607016}
   - component: {fileID: 1984607019}
   - component: {fileID: 1984607018}
+  - component: {fileID: 1984607020}
   m_Layer: 0
   m_Name: Darkness
   m_TagString: Untagged
@@ -80884,9 +80885,9 @@ MonoBehaviour:
   onTriggerEnter:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1984607019}
-        m_TargetAssemblyTypeName: LoadScene, Assembly-CSharp
-        m_MethodName: LoadSceneSpecific
+      - m_Target: {fileID: 1984607020}
+        m_TargetAssemblyTypeName: RestartScene, Assembly-CSharp
+        m_MethodName: RestartSceneSpecific
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -80899,8 +80900,21 @@ MonoBehaviour:
   onTriggerExit:
     m_PersistentCalls:
       m_Calls: []
-  tagFilter: 
+  tagFilter: Player
 --- !u!114 &1984607019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1984607014}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25beca027763a5748b3a169b348caa8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneName: Died By Darkness
+--- !u!114 &1984607020
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -80909,10 +80923,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1984607014}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25beca027763a5748b3a169b348caa8d, type: 3}
+  m_Script: {fileID: 11500000, guid: 1553ac6acb9b2f34684665af223e293a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: Died By Darkness
 --- !u!1001 &1986223086
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class CameraHeadBob : MonoBehaviour
 {
-    [SerializeField] private float walkBobSpeed;
-    [SerializeField] private float walkBobAmount;
-    [SerializeField] private float walkBobAmountX;
-    [SerializeField] private float runBobSpeed;
-    [SerializeField] private float runBobAmount;
-    [SerializeField] private float runBobAmountX;
+    [SerializeField] private float walkBobSpeed = 12f;
+    [SerializeField] private float walkBobAmount = 0.05f;
+    [SerializeField] private float walkBobAmountX = 0.03f;
+    [SerializeField] private float runBobSpeed = 20f;
+    [SerializeField] private float runBobAmount = 0.12f;
+    [SerializeField] private float runBobAmountX = 0.06f;
     [SerializeField] private PlayerController playerController;
-    
+
     private float defaultYPos;
     private float defaultXPos;
     private float timer;
@@ -18,7 +18,7 @@ public class CameraHeadBob : MonoBehaviour
     {
         defaultYPos = transform.localPosition.y;
         defaultXPos = transform.localPosition.x;
-        
+
         if (playerController == null)
         {
             playerController = FindObjectOfType<PlayerController>();
@@ -42,7 +42,7 @@ public class CameraHeadBob : MonoBehaviour
             timer += Time.deltaTime * bobSpeed;
             float newY = defaultYPos + Mathf.Sin(timer) * bobAmount;
             float newX = defaultXPos + Mathf.Cos(timer * 0.5f) * bobAmountX;
-            
+
             transform.localPosition = new Vector3(Mathf.Lerp(transform.localPosition.x, newX, Time.deltaTime * 10f), Mathf.Lerp(transform.localPosition.y, newY, Time.deltaTime * 10f), transform.localPosition.z);
         }
         else
@@ -52,3 +52,4 @@ public class CameraHeadBob : MonoBehaviour
         }
     }
 }
+

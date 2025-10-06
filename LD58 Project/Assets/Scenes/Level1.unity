@@ -2456,8 +2456,6 @@ PrefabInstance:
     - {fileID: 2458198593338349537, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 7170358587530335887, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 1650675158524214958, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
-    - {fileID: 5260702600375776500, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
-    - {fileID: 8949920642188785301, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 7865079719074343617, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 6072877446671298121, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     m_RemovedGameObjects: []
@@ -14783,15 +14781,12 @@ PrefabInstance:
     - {fileID: 4922174535721592459, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 7522014839904146975, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 3722662854503086035, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
-    - {fileID: 278474601394019982, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 5546907529636476850, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 427117541410157148, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 2458198593338349537, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 7170358587530335887, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
-    - {fileID: 1650675158524214958, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 5260702600375776500, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 8949920642188785301, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
-    - {fileID: 7865079719074343617, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 6072877446671298121, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -20944,7 +20939,6 @@ PrefabInstance:
     - {fileID: 4922174535721592459, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 7522014839904146975, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 3722662854503086035, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
-    - {fileID: 278474601394019982, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 5546907529636476850, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 427117541410157148, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 2458198593338349537, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
@@ -23859,12 +23853,10 @@ PrefabInstance:
     - {fileID: 4922174535721592459, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 7522014839904146975, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 3722662854503086035, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
-    - {fileID: 278474601394019982, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 5546907529636476850, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 427117541410157148, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 2458198593338349537, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 7170358587530335887, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
-    - {fileID: 1650675158524214958, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 5260702600375776500, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 8949920642188785301, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
     - {fileID: 7865079719074343617, guid: b7929dcb2842b8a4fbf02450a92f9179, type: 3}
@@ -37877,7 +37869,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25beca027763a5748b3a169b348caa8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: End
+  sceneName: Level2
 --- !u!114 &1440771400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51254,7 +51246,7 @@ Transform:
   m_GameObject: {fileID: 1933393576}
   serializedVersion: 2
   m_LocalRotation: {x: 0.4854057, y: -0.51418036, z: 0.5141798, w: 0.4854061}
-  m_LocalPosition: {x: 35.365585, y: 6.929966, z: 237.71446}
+  m_LocalPosition: {x: 38.31, y: 4.98, z: 237.88}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

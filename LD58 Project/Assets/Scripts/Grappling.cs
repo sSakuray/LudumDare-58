@@ -6,17 +6,17 @@ public class Grappling : MonoBehaviour
     [SerializeField] private Transform grappleGunTip;   
     [SerializeField] private Transform cam;           
     [SerializeField] private Transform player;        
-    [SerializeField] public LayerMask whatIsGrappleable; // Слой объектов к которым можно цепляться
+    [SerializeField] public LayerMask whatIsGrappleable;
     [SerializeField] public LineRenderer lr;           
-    [SerializeField] private KeyCode grappleKey = KeyCode.Mouse0; // Клавиша для граплинга (по умолчанию ЛКМ)
-    [SerializeField] private float maxGrappleDistance; // Максимальная дистанция граплинга
-    [SerializeField] private float grappleSpeed;       // Скорость подтягивания к точке
-    [SerializeField] private float grapplingCd;       // Кулдаун между выстрелами (в секундах)
+    [SerializeField] private KeyCode grappleKey = KeyCode.Mouse0;
+    [SerializeField] private float maxGrappleDistance;
+    [SerializeField] private float grappleSpeed;
+    [SerializeField] private float grapplingCd;
     
     [Header("Rope Animation")]
-    [SerializeField] private int ropeSegments; // Количество сегментов веревки для анимации
-    [SerializeField] private float ropeWaveSpeed; // Скорость волн на веревке
-    [SerializeField] private float ropeWaveHeight; // Высота волн на веревке
+    [SerializeField] private int ropeSegments;
+    [SerializeField] private float ropeWaveSpeed;
+    [SerializeField] private float ropeWaveHeight;
     
     private Vector3 currentGrapplePosition;
     private Vector3 grapplePoint;
@@ -30,35 +30,12 @@ public class Grappling : MonoBehaviour
 
     void Start()
     {
-        if (grappleGunTip == null)
-        {
-            grappleGunTip = transform;
-        }
-        if (lr == null)
-        {
-            lr = GetComponent<LineRenderer>();
-        }
-        if (cam == null)
-        {
-            cam = Camera.main?.transform;
-        }
+        grappleGunTip = transform;
+        lr = GetComponent<LineRenderer>();
+        cam = Camera.main?.transform;
         
-        if (player != null)
-        {
-            pc = player.GetComponent<PlayerController>();
-        }
-        else
-        {
-            pc = GetComponentInParent<PlayerController>();
-            if (pc == null) 
-            {
-                pc = GetComponent<PlayerController>();
-            }
-            if (pc != null) 
-            {
-                player = pc.transform;
-            }
-        }
+        pc = player.GetComponent<PlayerController>();
+        player = pc.transform;
     }
 
     bool IsValidVector(Vector3 vector)
@@ -67,11 +44,15 @@ public class Grappling : MonoBehaviour
         !float.IsInfinity(vector.x) && !float.IsInfinity(vector.y) && !float.IsInfinity(vector.z);
     }
 
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(grappleKey))
         {
             StartGrapple();
+        }
+        if (Input.GetKeyUp(grappleKey) && grappling)
+        {
+            StopGrapple();
         }
         if (grapplingCdTimer > 0)
         {
@@ -83,16 +64,17 @@ public class Grappling : MonoBehaviour
         }
     }
 
-    void UpdateGrapplePull()
+    private void UpdateGrapplePull()
     {
-        float dist = Vector3.Distance(transform.position, grapplePoint);
+        
+        float dist = Vector3.Distance(player.position, grapplePoint);
         if (dist < 1f) 
         {
             StopGrapple(); 
             return; 
         }
         
-        Vector3 dir = (grapplePoint - transform.position).normalized;
+        Vector3 dir = (grapplePoint - player.position).normalized;
         float speed = grappleSpeed;
         
         float gravityCompensation = Mathf.Abs(pc.gravity);
@@ -101,14 +83,14 @@ public class Grappling : MonoBehaviour
         pc.verticalVelocity = dir.y * speed + gravityCompensation * Time.deltaTime;
     }
 
-    void LateUpdate()
+    private void LateUpdate()
     {
         DrawRope();
     }
 
-    void StartGrapple()
+    private void StartGrapple()
     {
-        if (cam == null || grapplingCdTimer > 0 || grappling) 
+        if (cam == null || pc == null || grapplingCdTimer > 0 || grappling) 
         {
             return;
         }
@@ -137,7 +119,6 @@ public class Grappling : MonoBehaviour
         }
         else if (hit && ((1 << hitInfo.collider.gameObject.layer) & whatIsGrappleable) != 0)
         {
-            pc.horizontalVelocity = Vector3.zero; pc.verticalVelocity = 0f;
             pc.activeGrappling = true; pulling = true;
         }
         else
@@ -146,20 +127,24 @@ public class Grappling : MonoBehaviour
         }
     }
 
-    void StopGrapple()
+    private void StopGrapple()
     {
         if (!grappling) 
         {
             return;
         }
         CancelInvoke();
-        pulling = false; pc.freeze = false; pc.activeGrappling = false;
-        grappling = false; grapplingCdTimer = grapplingCd;
+        pulling = false; 
+        pc.freeze = false; 
+        pc.activeGrappling = false;
+        grappling = false; 
+        grapplingCdTimer = grapplingCd;
         hookFlying = false;
-        lr.enabled = false; lr.positionCount = 0;
+        lr.enabled = false; 
+        lr.positionCount = 0;
     }
 
-    void DrawRope()
+    private void DrawRope()
     {
         if (!grappling || lr.positionCount < 2) 
         {

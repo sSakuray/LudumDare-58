@@ -5,6 +5,6 @@ public class RestartGame : MonoBehaviour
 {
     public void RestartTheGame()
     {
-        SceneManager.LoadScene("Tutorial");
+        SceneManager.LoadScene("Level1");
     }
 }
