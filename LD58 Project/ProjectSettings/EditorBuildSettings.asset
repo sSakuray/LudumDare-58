@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/DeadScreens/PLMCSplashScreen.unity
+    guid: 37c6732b8934c40468d57d18cc1ad1d3
+  - enabled: 1
     path: Assets/Scenes/DeadScreens/StartScreen.unity
     guid: dc2f4ffa3fa78d94f842e1190fb2d4b2
   - enabled: 1

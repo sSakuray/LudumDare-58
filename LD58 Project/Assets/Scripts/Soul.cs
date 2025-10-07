@@ -4,8 +4,8 @@ using System.Collections;
 public class Soul : MonoBehaviour
 {
     [SerializeField] private float timeToAdd = 10f;
-    [SerializeField] private Renderer objectRenderer; // Renderer объекта с материалом
-    [SerializeField] private float effectDuration = 1f; // Длительность эффекта перед удалением
+    [SerializeField] private Renderer objectRenderer;
+    [SerializeField] private float effectDuration = 1f;
     [SerializeField] private GameObject collectSound;
 
     private Material material;
@@ -14,10 +14,9 @@ public class Soul : MonoBehaviour
     
     private void Start()
     {
-        // Получаем материал и устанавливаем Value в 0
         if (objectRenderer != null)
         {
-            material = objectRenderer.material; // Создаём instance материала
+            material = objectRenderer.material;
             material.SetFloat(ValueProperty, 0f);
         }
     }
@@ -38,7 +37,6 @@ public class Soul : MonoBehaviour
             collectSound.GetComponent<AudioSource>().Play();
         }
         
-        // Запускаем эффект растворения
         StartCoroutine(DissolveEffect());
     }
     
@@ -46,7 +44,6 @@ public class Soul : MonoBehaviour
     {
         if (material != null)
         {
-            // Плавно меняем Value от 0 до 1
             float elapsed = 0f;
             while (elapsed < effectDuration)
             {
@@ -59,7 +56,6 @@ public class Soul : MonoBehaviour
             material.SetFloat(ValueProperty, 1f);
         }
         
-        // Удаляем объект (или родителя, если нужно)
         Destroy(gameObject);
     }
 }

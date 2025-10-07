@@ -1,12 +1,22 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraController : MonoBehaviour
 {
     [Header("Camera Settings")]
-    [SerializeField] private float sens; 
+    private const string HighscoreKey = "Sens";
+    [SerializeField] private float sens;
+    public Slider slider;
     [SerializeField] private float maxYAngle;
 
     private float rotationX;
+
+    public void ChangeSens()
+    {
+        sens = slider.value;
+        PlayerPrefs.SetFloat("Sens", sens);
+        PlayerPrefs.Save();
+    }
 
     private void Start()
     {

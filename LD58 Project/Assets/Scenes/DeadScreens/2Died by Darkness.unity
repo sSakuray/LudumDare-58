@@ -1164,7 +1164,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000030517, y: -90}
+  m_AnchoredPosition: {x: -0.000030517, y: -44.361}
   m_SizeDelta: {x: 354.8901, y: 88.7225}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1564578768
@@ -1187,7 +1187,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Angel found you. Just don't move when you see that face in front of you.
+  m_text: Died to a darkness. Seriously????
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 66af1c039260be1418e7b3e982b67958, type: 2}
   m_sharedMaterial: {fileID: -8586210935419689161, guid: 66af1c039260be1418e7b3e982b67958, type: 2}
@@ -1318,6 +1318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8e1fa6798343c5458285e46eeebf823, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelName: Level2
 --- !u!114 &1584247894
 MonoBehaviour:
   m_ObjectHideFlags: 0

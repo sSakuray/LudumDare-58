@@ -20,7 +20,7 @@ public class MusicTrigger : MonoBehaviour
 
         if (musicSwitcher != null)
         {
-            musicSwitcher.PlayTrack(1);
+            musicSwitcher.PlayTrack(trackIndex);
         }
     }
 }

@@ -19,12 +19,8 @@ public class SummonEnemies : MonoBehaviour
         {
             float waitTime1 = Random.Range(timeMin, timeMax);
             float waitTime2 = Random.Range(timeMin, timeMax);
-
-            //call flicker
             yield return new WaitForSeconds(waitTime1);
             flicker.GetComponent<FlickerSummon>().CallFLicker();
-            
-            // call rush
             yield return new WaitForSeconds(waitTime2);
 
         }

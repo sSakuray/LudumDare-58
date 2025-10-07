@@ -96,9 +96,7 @@ public class PlayerController : MonoBehaviour
     
     private bool CheckWallTop(Vector3 pos)
     {
-        return Physics.Raycast(pos, Vector3.down, out RaycastHit hit, groundCheckDistance) &&
-               hit.collider.CompareTag("Wall") &&
-               Vector3.Dot(hit.normal, Vector3.up) > 0.7f;
+        return Physics.Raycast(pos, Vector3.down, out RaycastHit hit, groundCheckDistance) && hit.collider.CompareTag("Wall") && Vector3.Dot(hit.normal, Vector3.up) > 0.7f;
     }
 
 
