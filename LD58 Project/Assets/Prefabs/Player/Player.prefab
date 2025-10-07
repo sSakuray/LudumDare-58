@@ -162,17 +162,17 @@ MonoBehaviour:
   jumpForce: 6
   jumpCooldown: 0.25
   airMultiplier: 0.4
-  airControlStrength: 8.01
+  airControlStrength: 2
   jumpMomentumMultiplier: 0
   jumpBoostDuration: 0
   gravity: -20
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 1152
   slopeLayer:
     serializedVersion: 2
     m_Bits: 0
-  groundCheckDistance: 1.1
+  groundCheckDistance: 0.6
   player: {fileID: 7995943518710770889}
   grounded: 0
   soundPlayer: {fileID: 0}
@@ -325,7 +325,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 983
+    m_Bits: 2007
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -403,7 +403,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sens: 2
-  maxYAngle: 80
+  slider: {fileID: 0}
+  maxYAngle: 90
 --- !u!114 &2310182138433003731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -639,12 +640,12 @@ MonoBehaviour:
   player: {fileID: 7995943518710770889}
   whatIsGrappleable:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 1088
   lr: {fileID: 105913142507259705}
   swingKey: 323
   maxSwingDistance: 25
   swingForce: 1
-  swingSpeedBonus: 3
+  swingSpeedBonus: 1
   currentSwingSpeed: 18
   swingAngle: 0
   currentRopeLengthDebug: 0
