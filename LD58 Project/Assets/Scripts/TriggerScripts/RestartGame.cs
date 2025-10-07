@@ -3,8 +3,9 @@ using UnityEngine.SceneManagement;
 
 public class RestartGame : MonoBehaviour
 {
+    public string levelName = "Level1";
     public void RestartTheGame()
     {
-        SceneManager.LoadScene("Level1");
+        SceneManager.LoadScene(levelName);
     }
 }

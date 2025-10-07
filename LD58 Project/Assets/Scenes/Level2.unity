@@ -5807,14 +5807,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 256499782565514818, guid: 146bc43545bedbc408c57c88cc889ae3, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 800697286694028139, guid: 146bc43545bedbc408c57c88cc889ae3, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 200.48123
-      objectReference: {fileID: 0}
     - target: {fileID: 957137048664349263, guid: 146bc43545bedbc408c57c88cc889ae3, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -5823,46 +5815,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
-    - target: {fileID: 2116852282584338079, guid: 146bc43545bedbc408c57c88cc889ae3, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2116852282584338079, guid: 146bc43545bedbc408c57c88cc889ae3, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2116852282584338079, guid: 146bc43545bedbc408c57c88cc889ae3, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2141692397109657571, guid: 146bc43545bedbc408c57c88cc889ae3, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 351213845}
-    - target: {fileID: 2141692397109657571, guid: 146bc43545bedbc408c57c88cc889ae3, type: 3}
-      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ChangeSens
-      objectReference: {fileID: 0}
     - target: {fileID: 2895172757570123322, guid: 146bc43545bedbc408c57c88cc889ae3, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 815653880}
-    - target: {fileID: 4115607846386233185, guid: 146bc43545bedbc408c57c88cc889ae3, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4115607846386233185, guid: 146bc43545bedbc408c57c88cc889ae3, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4115607846386233185, guid: 146bc43545bedbc408c57c88cc889ae3, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4531573845454449485, guid: 146bc43545bedbc408c57c88cc889ae3, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 133.9
-      objectReference: {fileID: 0}
     - target: {fileID: 4873296053057887168, guid: 146bc43545bedbc408c57c88cc889ae3, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -5951,33 +5911,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6474954072819468128, guid: 146bc43545bedbc408c57c88cc889ae3, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6474954072819468128, guid: 146bc43545bedbc408c57c88cc889ae3, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6474954072819468128, guid: 146bc43545bedbc408c57c88cc889ae3, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9123389298051167454, guid: 146bc43545bedbc408c57c88cc889ae3, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9123389298051167454, guid: 146bc43545bedbc408c57c88cc889ae3, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9123389298051167454, guid: 146bc43545bedbc408c57c88cc889ae3, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 8199181354796666956, guid: 146bc43545bedbc408c57c88cc889ae3, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 146bc43545bedbc408c57c88cc889ae3, type: 3}
