@@ -5,19 +5,19 @@ public class Swinging : MonoBehaviour
     [SerializeField] private Transform swingGunTip;     
     [SerializeField] private Transform cam;       
     [SerializeField] private Transform player;          
-    [SerializeField] private LayerMask whatIsGrappleable; // Слой объектов к которым можно цепляться
+    [SerializeField] private LayerMask whatIsGrappleable;
     [SerializeField] private LineRenderer lr;          
     [SerializeField] private KeyCode swingKey = KeyCode.Mouse1; 
-    [SerializeField] private float maxSwingDistance; // Максимальная дистанция крюка 
-    [SerializeField] private float swingForce = 15f; // Базовая сила раскачки
-    [SerializeField] private float swingSpeedBonus = 25f; // Бонус силы от скорости персонажа
+    [SerializeField] private float maxSwingDistance; 
+    [SerializeField] private float swingForce = 15f; 
+    [SerializeField] private float swingSpeedBonus = 25f; 
     private int ropeSegments = 25;     
     private float ropeWaveSpeed = 10f;
     private float ropeWaveHeight = 0.5f; 
     
-    public float currentSwingSpeed; // Текущая скорость качания (для отладки)
-    public float swingAngle; // Угол качания относительно вертикали (для отладки)
-    public float currentRopeLengthDebug; // Текущая длина веревки (для отладки)
+    public float currentSwingSpeed;
+    public float swingAngle;
+    public float currentRopeLengthDebug;
     
     private Vector3 swingPoint;
     private Vector3 currentGrapplePosition;

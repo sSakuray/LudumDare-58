@@ -4,14 +4,14 @@ using System.Collections;
 
 public class HighscoreCounter : MonoBehaviour
 {
-    private const string HighscoreKey = "Highscore"; // Key for PlayerPrefs
+    private const string HighscoreKey = "Highscore";
     public TMP_Text timerText;
-    private float elapsedTime = 0f; // Time elapsed in seconds
-    private Coroutine timerCoroutine; // Store reference to the coroutine
+    private float elapsedTime = 0f;
+    private Coroutine timerCoroutine;
 
     public void StartHighscoreTimer()
     {
-        if (timerCoroutine == null) // Prevent starting multiple timers
+        if (timerCoroutine == null)
         {
             timerCoroutine = StartCoroutine(CountTime());
         }
@@ -19,11 +19,11 @@ public class HighscoreCounter : MonoBehaviour
 
     public void StopHighscoreTimer()
     {
-        if (timerCoroutine != null) // Check if the coroutine is running
+        if (timerCoroutine != null)
         {
-            StopCoroutine(timerCoroutine); // Stop the coroutine
-            timerCoroutine = null; // Clear the reference
-            SaveTimer(); // Save the timer when stopped
+            StopCoroutine(timerCoroutine);
+            timerCoroutine = null;
+            SaveTimer();
         }
     }
 
@@ -31,9 +31,9 @@ public class HighscoreCounter : MonoBehaviour
     {
         while (true)
         {
-            elapsedTime += Time.deltaTime; // Increment elapsed time
-            UpdateTimerText(elapsedTime); // Update the timer text
-            yield return null; // Wait for the next frame
+            elapsedTime += Time.deltaTime;
+            UpdateTimerText(elapsedTime);
+            yield return null;
         }
     }
 
@@ -48,9 +48,8 @@ public class HighscoreCounter : MonoBehaviour
 
     public void SaveTimer()
     {
-        // Save the elapsed time as a string in PlayerPrefs
         PlayerPrefs.SetString(HighscoreKey, timerText.text);
-        PlayerPrefs.Save(); // Ensure data is saved immediately
+        PlayerPrefs.Save();
     }
 
     public void GetSavedHighscore()

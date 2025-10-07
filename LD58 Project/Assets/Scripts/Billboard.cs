@@ -16,9 +16,7 @@ public class Billboard : MonoBehaviour {
     originalRotation = transform.rotation.eulerAngles;
   }
 
-  // Use Late update so everything should have finished moving.
   void LateUpdate() {
-    // There are two ways people billboard things.
     switch (billboardType) {
       case BillboardType.LookAtCamera:
         transform.LookAt(Camera.main.transform.position, Vector3.up);
@@ -29,7 +27,6 @@ public class Billboard : MonoBehaviour {
       default:
         break;
     }
-    // Modify the rotation in Euler space to lock certain dimensions.
     Vector3 rotation = transform.rotation.eulerAngles;
     if (lockX) { rotation.x = originalRotation.x; }
     if (lockY) { rotation.y = originalRotation.y; }

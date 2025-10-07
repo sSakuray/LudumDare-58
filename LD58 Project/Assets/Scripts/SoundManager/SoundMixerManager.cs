@@ -66,7 +66,6 @@ public class SoundMixerManager : MonoBehaviour
         float musicVolume = PlayerPrefs.GetFloat(MUSIC_VOLUME_KEY, -20f);
         float sfxVolume = PlayerPrefs.GetFloat(SFX_VOLUME_KEY, -20f);
         
-        // Устанавливаем значения слайдеров
         if (masterSlider != null)
         {
             masterSlider.value = masterVolume;

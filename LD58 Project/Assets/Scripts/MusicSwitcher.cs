@@ -6,10 +6,7 @@ public class MusicSwitcher : MonoBehaviour
 
     private void Start()
     {
-        // Автоматически находим все AudioSource на этом объекте
         musicTracks = GetComponents<AudioSource>();
-        
-        // Останавливаем все треки в начале
         StopAllMusic();
     }
 
@@ -17,10 +14,7 @@ public class MusicSwitcher : MonoBehaviour
     {
         if (trackIndex < 0 || trackIndex >= musicTracks.Length) return;
 
-        // Останавливаем все треки
         StopAllMusic();
-
-        // Запускаем нужный трек
         musicTracks[trackIndex].Play();
     }
 
