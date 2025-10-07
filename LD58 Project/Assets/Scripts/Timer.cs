@@ -4,19 +4,22 @@ using System.Collections;
 
 public class Timer : MonoBehaviour
 {
-    public TMP_Text timerText; 
-    public Animator animator; 
-    public float countdownTime = 120f; 
+    public TMP_Text timerText;
+    public Animator animator;
+    public float countdownTime = 120f;
     public bool isPaused = false;
+    public AudioSource musicPitcher;
+    public float musicPitch = 1.2f;
 
     private float timeRemaining;
     private float elapsedTime = 0f;
 
-    private void Start()
+    public void StarTimer()
     {
         timeRemaining = countdownTime;
         StartCoroutine(Countdown());
     }
+
 
     public void AddTime(float seconds)
     {
@@ -40,13 +43,16 @@ public class Timer : MonoBehaviour
 
                 elapsedTime = 0f;
             }
-            if (timeRemaining < 30)
+            if (timeRemaining < 10)
             {
+                musicPitcher.pitch = musicPitch;
                 timerText.color = Color.red;
             }
+
         }
 
-            UpdateTimerText(0);
+        UpdateTimerText(0);
+        GetComponent<LoadScene>().LoadSceneSpecific();
     }
 
     private void UpdateTimerText(float time)
@@ -60,6 +66,7 @@ public class Timer : MonoBehaviour
 
     private void PlayAnimation()
     {
-      animator.SetTrigger("PlayAnimation");
+        animator.SetTrigger("PlayAnimation");
     }
 }
+

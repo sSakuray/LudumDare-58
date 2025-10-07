@@ -7,7 +7,6 @@ public class MusicSwitcher : MonoBehaviour
     private void Start()
     {
         musicTracks = GetComponents<AudioSource>();
-        
         StopAllMusic();
     }
 
@@ -16,7 +15,6 @@ public class MusicSwitcher : MonoBehaviour
         if (trackIndex < 0 || trackIndex >= musicTracks.Length) return;
 
         StopAllMusic();
-
         musicTracks[trackIndex].Play();
     }
 
