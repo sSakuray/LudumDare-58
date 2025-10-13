@@ -29,9 +29,18 @@ public class Swinging : MonoBehaviour
 
     void Start()
     {
-        if (swingGunTip == null) swingGunTip = transform;
-        if (lr == null) lr = GetComponent<LineRenderer>();
-        if (cam == null) cam = Camera.main?.transform;
+        if (swingGunTip == null) 
+        {
+            swingGunTip = transform;
+        }
+        if (lr == null) 
+        {
+            lr = GetComponent<LineRenderer>();
+        }
+        if (cam == null) 
+        {
+            cam = Camera.main?.transform;
+        }
         
         if (player != null)
         {
@@ -78,18 +87,20 @@ public class Swinging : MonoBehaviour
         Vector3 ropeDir = (swingPoint - player.position).normalized;
         Vector3 vel = pc.horizontalVelocity + Vector3.up * pc.verticalVelocity;
         
-        vel += Vector3.ProjectOnPlane(Vector3.down * Mathf.Abs(pc.gravity), ropeDir) * Time.deltaTime;
-        
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         if (input.magnitude > 0.1f)
         {
-            float force = swingForce + (pc.currentSpeed / pc.maxSpeed * swingSpeedBonus);
-            Vector3 inputDir = (cam.right * input.x + cam.forward * input.y); inputDir.y = 0; inputDir.Normalize();
+            Vector3 inputDir = (cam.right * input.x + cam.forward * input.y); 
+            inputDir.y = 0; 
+            inputDir.Normalize();
             Vector3 tangInput = Vector3.ProjectOnPlane(inputDir, ropeDir);
-            Vector3 tangVel = Vector3.ProjectOnPlane(vel, ropeDir);
-            float bonus = tangVel.magnitude > 0.5f && Vector3.Dot(tangInput.normalized, tangVel.normalized) > 0 ? 2f : 1f;
-            vel += tangInput * force * bonus * Time.deltaTime;
+            
+            float swingSpeedRatio = Mathf.Clamp01(vel.magnitude / 30f); 
+            float force = swingForce + (swingSpeedRatio * swingSpeedBonus);
+            vel += tangInput * force * Time.deltaTime;
         }
+        
+        vel += Vector3.down * Mathf.Abs(pc.gravity) * Time.deltaTime;
         
         vel = Vector3.ProjectOnPlane(vel, ropeDir);
         
@@ -130,15 +141,12 @@ public class Swinging : MonoBehaviour
         {
             return;
         }
-        float boost = 0.2f + (pc.currentSpeed / pc.maxSpeed * 0.6f);
-        pc.horizontalVelocity += pc.horizontalVelocity.normalized * pc.horizontalVelocity.magnitude * boost;
-        if (pc.verticalVelocity < 0) 
-        {
-            pc.verticalVelocity *= (1f + boost * 0.5f);
-        }
-        swinging = false; pc.activeGrappling = false;
+        
+        swinging = false; 
+        pc.activeGrappling = false;
         hookFlying = false;
-        lr.positionCount = 0; lr.enabled = false;
+        lr.positionCount = 0; 
+        lr.enabled = false;
     }
 
     void DrawRope()

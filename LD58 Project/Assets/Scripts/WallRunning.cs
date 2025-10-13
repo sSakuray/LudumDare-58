@@ -2,48 +2,38 @@ using UnityEngine;
 
 public class WallRunning : MonoBehaviour
 {
+    [Header("Wall Run Settings")]
     [SerializeField] private float wallRunSpeed;
     [SerializeField] private float wallStickForce;
+    
+    [Header("Wall Jump Settings")]
     [SerializeField] private float wallJumpHeight;
-    [SerializeField] private float wallJumpDistance;
-    [SerializeField] private float maxWallRunTime;
-    [SerializeField] private float wallTiltAngle = 15f;
-    [SerializeField] private float tiltSpeed = 5f;
-    [SerializeField] private Transform cam; 
+    [SerializeField] private float wallJumpForce;
+    
+    [Header("Camera Tilt")]
+    [SerializeField] private float wallTiltAngle;
+    [SerializeField] private float tiltSpeed;
+    
+    [Header("References")]
+    [SerializeField] private Transform cam;
 
-    private CharacterController controller;
     private PlayerController pc;
-    private bool onWall;
+    private bool isWallRunning;
     private Vector3 wallNormal;
-    private float wallRunTimer;
-    private GameObject lastWall;
-    private bool hasWallDoubleJump;
-    private float wallJumpCooldown;
-    private Vector3 originalRotation;
     private float currentTilt;
 
     private void Start()
     {
-        controller = GetComponent<CharacterController>();
         pc = GetComponent<PlayerController>();
-        originalRotation = transform.eulerAngles;
     }
 
     private void Update()
     {
-        if (wallJumpCooldown > 0)
+        if (isWallRunning)
         {
-            wallJumpCooldown -= Time.deltaTime;
-        }
-        
-        bool canWallRun = onWall && !pc.grounded && wallRunTimer > 0 && wallJumpCooldown <= 0;
-        
-        if (canWallRun)
-        {
-            pc.SetWallRunning(true);
-            WallRun();
+            HandleWallRun();
             ApplyWallTilt();
-            wallRunTimer -= Time.deltaTime;
+            
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 WallJump();
@@ -51,23 +41,7 @@ public class WallRunning : MonoBehaviour
         }
         else
         {
-            if (pc.wallRunning)
-            {
-                pc.horizontalVelocity *= 0.8f;
-            }
-            pc.SetWallRunning(false);
             ResetTilt();
-            
-            if (hasWallDoubleJump && !pc.grounded && Input.GetKeyDown(KeyCode.Space))
-            {
-                WallDoubleJump();
-            }
-            
-            if (pc.grounded)
-            {
-                wallRunTimer = maxWallRunTime;
-                hasWallDoubleJump = false;
-            }
         }
     }
 
@@ -75,99 +49,76 @@ public class WallRunning : MonoBehaviour
     {
         if (pc.grounded)
         {
-            onWall = false;
-            lastWall = null;
-            pc.SetWallRunning(false);
-            hasWallDoubleJump = false;
-            wallJumpCooldown = 0f;
-            return;
-        }
-        
-        if (wallJumpCooldown > 0)
-        {
+            if (isWallRunning)
+            {
+                StopWallRun();
+            }
             return;
         }
         
         if (hit.gameObject.CompareTag("Wall"))
         {
             float dotUp = Vector3.Dot(hit.normal, Vector3.up);
-            float dotDown = Vector3.Dot(hit.normal, Vector3.down);
-            
-            if (dotUp > 0.7f)
+            if (Mathf.Abs(dotUp) < 0.1f)
             {
-                onWall = false;
-                return;
+                wallNormal = hit.normal;
+                if (!isWallRunning)
+                {
+                    StartWallRun();
+                }
             }
-            
-            if (dotDown > 0.7f)
-            {
-                return;
-            }
-            
-            if (lastWall != hit.gameObject)
-            {
-                lastWall = hit.gameObject;
-                wallRunTimer = maxWallRunTime;
-            }
-            
-            onWall = true;
-            wallNormal = hit.normal;
         }
     }
 
-    private void WallRun()
+    private void StartWallRun()
     {
-        
+        isWallRunning = true;
+        pc.SetWallRunning(true);
+    }
+
+    private void StopWallRun()
+    {
+        isWallRunning = false;
+        pc.SetWallRunning(false);
+    }
+
+    private void HandleWallRun()
+    {
         float vertical = Input.GetAxisRaw("Vertical");
         float horizontal = Input.GetAxisRaw("Horizontal");
         
-        Vector3 moveDir = Vector3.zero;
-        if (Mathf.Abs(vertical) > 0.1f)
+        Vector3 inputDir = (cam.forward * vertical + cam.right * horizontal);
+        inputDir.y = 0;
+        inputDir.Normalize();
+        
+        Vector3 wallForward = Vector3.Cross(wallNormal, Vector3.up);
+        Vector3 movement = -wallNormal * wallStickForce; 
+        
+        if (inputDir.magnitude > 0.1f)
         {
-            moveDir += cam.forward * vertical;
-        }
-        if (Mathf.Abs(horizontal) > 0.1f)
-        {
-            moveDir += cam.right * horizontal;
+            float forwardInput = Vector3.Dot(inputDir, wallForward);
+            movement += wallForward * forwardInput * wallRunSpeed;
         }
         
-        moveDir.y = 0;
-        Vector3 movement = -wallNormal * wallStickForce + moveDir.normalized * wallRunSpeed;
-        controller.Move(movement * Time.deltaTime);
+        pc.horizontalVelocity = new Vector3(movement.x, 0f, movement.z);
+        pc.verticalVelocity = 0f; 
     }
 
     private void WallJump()
     {
-        Vector3 camDirection = cam.forward;
-        camDirection.y = 0;
+        Vector3 jumpDir = cam.forward;
+        jumpDir.y = 0;
+        jumpDir.Normalize();
         
-        float speedRatio = pc.currentSpeed / pc.maxSpeed;
-        float finalJumpDistance = wallJumpDistance * Mathf.Lerp(0.5f, 5.0f, speedRatio);
-        
-        pc.horizontalVelocity = camDirection.normalized * finalJumpDistance;
+        pc.horizontalVelocity = jumpDir * wallJumpForce;
         pc.verticalVelocity = wallJumpHeight;
-        hasWallDoubleJump = true;
-        wallJumpCooldown = 0.5f;
-        pc.SetWallRunning(false);
-        onWall = false;
-    }
-    
-    private void WallDoubleJump()
-    {
         
-        pc.verticalVelocity = wallJumpHeight * 1.3f;
-        
-        Vector3 forwardDir = cam.forward;
-        forwardDir.y = 0;
-        forwardDir.Normalize();
-        pc.horizontalVelocity += forwardDir * (pc.currentSpeed * 0.5f);
-        
-        hasWallDoubleJump = false;
+        pc.SetWallJumped();
+        StopWallRun();
     }
     
     private void ApplyWallTilt()
     {
-        
         float wallSide = Vector3.Dot(transform.right, wallNormal);
         float targetTilt = wallSide > 0 ? -wallTiltAngle : wallTiltAngle;
         
