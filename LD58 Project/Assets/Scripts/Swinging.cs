@@ -142,6 +142,21 @@ public class Swinging : MonoBehaviour
             return;
         }
         
+        Vector3 horizontalVel = pc.horizontalVelocity;
+        float horizontalSpeed = horizontalVel.magnitude;
+        float verticalSpeed = pc.verticalVelocity; 
+        
+        if (horizontalSpeed > 0.1f)
+        {
+            Vector3 camDir = cam.forward;
+            camDir.y = 0; 
+            camDir.Normalize();
+            
+            pc.horizontalVelocity = camDir * horizontalSpeed;
+            pc.verticalVelocity = verticalSpeed; 
+            pc.ClearAirVelocity(); 
+        }
+        
         swinging = false; 
         pc.activeGrappling = false;
         hookFlying = false;
